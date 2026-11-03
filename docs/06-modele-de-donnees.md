@@ -83,6 +83,7 @@ audit_logs, settings, legal_documents
 | `audit_logs` | id, actor_id, action, entity_type, entity_id, before/after (JSON), ip, created_at |
 | `settings` | key, value (JSON), updated_by — paramètres plateforme et configuration fiscale ⏸ |
 | `contact_messages` | id, name, email, subject, message, created_at, status |
+| `vehicle_requests` | id, vehicle_id, vehicle_reference, first_name, last_name, email, phone, postal_code, consent, status, created_at (demande « Faire une demande » d'une fiche ; RLS sans politique) |
 
 ## 3. Contraintes et index clés
 
@@ -109,6 +110,7 @@ Le schéma est écrit en TypeScript dans `src/lib/db/schema/` et traduit en SQL 
 | Fichier du schéma | Tables | Migration |
 |---|---|---|
 | `contact.ts` | `contact_messages` | `0000_messages_contact.sql` |
+| `demandes.ts` | `vehicle_requests` | `0006_demandes_vehicule.sql` |
 | `catalogue.ts` | `brands`, `models`, `vehicles`, `equipments`, `vehicle_equipments`, `vehicle_photos`, `vehicle_documents` | `0001_catalogue_comptes_favoris.sql` |
 | `comptes.ts` | `profiles`, `roles`, `permissions`, `role_permissions`, `user_roles` | `0001_…` |
 | `favoris.ts` | `favorites` | `0001_…` |

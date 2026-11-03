@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | DriveDeal",
   },
   description:
-    "Trouvez, réservez et achetez votre véhicule d'occasion en ligne : catalogue détaillé, paiement sécurisé et documents disponibles dans votre espace.",
+    "Découvrez le stock de véhicules d'occasion de DriveDeal : catalogue détaillé, comparateur et demande en ligne pour être recontacté par notre équipe.",
 };
 
 /**

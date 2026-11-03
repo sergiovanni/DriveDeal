@@ -3,13 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BoutonComparer } from "@/components/comparateur/BoutonComparer";
 import { Badge } from "@/components/ui/Badge";
-import { Bouton } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { CarteVehicule } from "@/components/vehicules/CarteVehicule";
+import { FormulaireDemande } from "@/components/vehicules/FormulaireDemande";
 import { GalerieVehicule } from "@/components/vehicules/GalerieVehicule";
 import { formaterKilometrage, formaterPrix } from "@/lib/money";
 import { versElementComparaison } from "@/modules/comparateur/element";
 import {
+  baseConfiguree,
   listerVehicules,
   trouverVehicule,
   vehiculesSimilaires,
@@ -213,7 +214,7 @@ export default async function FicheVehicule({ params }: Props) {
           </section>
         </div>
 
-        {/* Colonne de droite : prix, récapitulatif, question au vendeur. Collée à l'écran sur grand écran. Le bouton « Acheter » reste désactivé tant que le parcours de commande n'existe pas. */}
+        {/* Colonne de droite : prix, récapitulatif, question au vendeur. Collée à l'écran sur grand écran. Pas d'achat en ligne : un formulaire de demande permet d'être recontacté. */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="space-y-5 rounded-2xl border border-gris-200 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap gap-2">
@@ -248,9 +249,9 @@ export default async function FicheVehicule({ params }: Props) {
             <p className="text-xs text-gris-500">
               Frais et TVA seront précisés une fois les règles de l’entreprise validées.
             </p>
-            <Bouton disabled taille="lg" className="w-full">
-              Acheter
-            </Bouton>
+            {/* Pas d'achat en ligne : le visiteur fait une demande, l'entreprise le recontacte. */}
+            <FormulaireDemande vehiculeId={v.id} actif={baseConfiguree()} />
+            <hr className="border-gris-200" />
             <BoutonComparer element={versElementComparaison(v)} variante="fiche" />
             <Link
               href={`/contact?sujet=vehicule&vehicule=${v.reference}`}
@@ -258,10 +259,6 @@ export default async function FicheVehicule({ params }: Props) {
             >
               Poser une question sur ce véhicule
             </Link>
-            <p className="text-xs text-gris-500">
-              L’achat en ligne sera disponible une fois le parcours de commande et de
-              paiement réalisé.
-            </p>
           </div>
         </aside>
       </div>

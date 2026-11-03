@@ -14,32 +14,32 @@ import { Conteneur } from "@/components/ui/Conteneur";
 export const metadata: Metadata = {
   title: "À propos",
   description:
-    "DriveDeal vend des véhicules d’occasion directement en ligne : fiches détaillées, achat simple et paiement sécurisé.",
+    "DriveDeal présente son propre stock de véhicules d’occasion en ligne : fiches détaillées, comparateur et échange direct avec notre équipe.",
 };
 
 const engagements = [
   {
     titre: "Transparence",
     texte:
-      "Chaque véhicule est présenté avec ses caractéristiques, ses équipements, son état général, son entretien et ses documents, pour acheter en connaissance de cause.",
+      "Chaque véhicule est présenté avec ses caractéristiques, ses équipements, son état général, son entretien et ses documents, pour vous décider en connaissance de cause.",
   },
   {
     titre: "Simplicité",
     texte:
-      "De la recherche à la facture, tout le parcours d’achat se fait en ligne : choix du véhicule, commande, paiement et suivi dans votre espace client.",
+      "Vous parcourez le catalogue, comparez jusqu’à trois véhicules, puis nous laissez une demande en quelques champs : nous vous recontactons.",
   },
   {
-    titre: "Sécurité",
+    titre: "Échange direct",
     texte:
-      "Le paiement passe par un prestataire spécialisé et n’est considéré comme encaissé qu’après sa confirmation. Nous ne conservons aucune donnée bancaire.",
+      "Pas d’achat automatique : nous préférons discuter avec vous, répondre à vos questions et vous accompagner. Vous pouvez aussi nous appeler directement.",
   },
 ];
 
 const etapes = [
   "Vous parcourez le catalogue et filtrez selon vos critères.",
   "Vous consultez la fiche détaillée du véhicule qui vous intéresse.",
-  "Vous commandez et réglez en ligne, de façon sécurisée.",
-  "Vous suivez votre commande et retrouvez vos documents dans votre espace.",
+  "Vous comparez jusqu’à trois véhicules côte à côte.",
+  "Vous faites une demande : nous vous recontactons pour en discuter.",
 ];
 
 export default function APropos() {
@@ -54,13 +54,13 @@ export default function APropos() {
             / <span className="text-white">À propos</span>
           </nav>
           <h1 className="max-w-3xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Acheter un véhicule d’occasion,{" "}
+            Trouvez votre véhicule d’occasion,{" "}
             <span className="text-ciel-300">simplement</span>.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/75">
-            DriveDeal propose à la vente son propre stock de véhicules d’occasion,
-            directement en ligne : vous choisissez, vous commandez, vous payez et vous
-            recevez vos documents sans quitter le site.
+            DriveDeal propose son propre stock de véhicules d’occasion : vous choisissez,
+            vous comparez, puis vous nous laissez une demande et nous vous recontactons
+            pour en discuter.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <BoutonLien href="/vehicules" taille="lg">

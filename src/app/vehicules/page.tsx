@@ -40,13 +40,12 @@ const garanties = [
       "Caractéristiques, équipements, état, entretien et documents pour chaque véhicule.",
   },
   {
-    titre: "Paiement sécurisé",
-    texte:
-      "Règlement en ligne via un prestataire agréé, sans stockage de données bancaires.",
+    titre: "Comparateur",
+    texte: "Comparez jusqu’à trois véhicules côte à côte avant de vous décider.",
   },
   {
-    titre: "Suivi de commande",
-    texte: "Commandes, paiements et factures réunis dans votre espace client.",
+    titre: "Échange direct",
+    texte: "Une demande en quelques champs : nous vous recontactons pour en discuter.",
   },
 ];
 

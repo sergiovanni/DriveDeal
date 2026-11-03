@@ -13,4 +13,5 @@ export * from "./catalogue";
 export * from "./comptes";
 export * from "./constantes";
 export * from "./contact";
+export * from "./demandes";
 export * from "./favoris";

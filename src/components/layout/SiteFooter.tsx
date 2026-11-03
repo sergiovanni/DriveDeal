@@ -26,8 +26,8 @@ export async function SiteFooter() {
         <div className="max-w-sm space-y-3">
           <Logo />
           <p className="text-sm leading-6">
-            Véhicules d’occasion vendus en ligne : fiches détaillées, achat sécurisé et
-            documents disponibles dans votre espace client.
+            Véhicules d’occasion : fiches détaillées, comparateur et échange direct avec
+            notre équipe.
           </p>
         </div>
 

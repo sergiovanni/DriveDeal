@@ -17,21 +17,21 @@ const atouts = [
   {
     titre: "Fiches détaillées",
     texte:
-      "Caractéristiques, équipements, état général, entretien et documents : tout ce qu’il faut savoir avant d’acheter.",
+      "Caractéristiques, équipements, état général, entretien et documents : tout ce qu’il faut savoir avant de vous décider.",
   },
   {
-    titre: "Paiement sécurisé",
+    titre: "Comparateur",
     texte:
-      "Réglez en ligne auprès d’un prestataire de paiement. Nous ne stockons aucune donnée bancaire.",
+      "Comparez jusqu’à trois véhicules côte à côte : prix, kilométrage, équipements et état.",
   },
   {
-    titre: "Documents dans votre espace",
-    texte: "Retrouvez vos commandes, vos paiements et vos factures au même endroit.",
+    titre: "Échangeons ensemble",
+    texte: "Une question ? Faites une demande ou appelez-nous : nous préférons discuter avec vous.",
   },
   {
-    titre: "Un véhicule, un acheteur",
+    titre: "Notre propre stock",
     texte:
-      "Chaque véhicule est unique : une fois votre achat engagé, il est réservé pour vous.",
+      "Tous les véhicules appartiennent à DriveDeal : pas d’annonces de particuliers.",
   },
 ];
 
@@ -42,19 +42,19 @@ const etapes = [
       "Recherchez avec les filtres et consultez la fiche complète : caractéristiques, état, entretien.",
   },
   {
-    titre: "Créez votre compte et commandez",
+    titre: "Comparez",
     texte:
-      "Vérifiez vos informations, relisez le récapitulatif et acceptez les conditions de vente.",
+      "Ajoutez jusqu’à trois véhicules au comparateur pour les voir côte à côte.",
   },
   {
-    titre: "Payez en ligne",
+    titre: "Faites une demande",
     texte:
-      "Le paiement est confirmé par le prestataire avant que la commande soit considérée comme payée.",
+      "Laissez votre nom, votre e-mail et votre code postal : cela prend une minute.",
   },
   {
-    titre: "Suivez et récupérez vos documents",
+    titre: "Nous vous recontactons",
     texte:
-      "Suivi de commande, facture et documents du véhicule disponibles dans votre espace.",
+      "Nous échangeons avec vous pour répondre à vos questions, par téléphone ou par e-mail.",
   },
 ];
 
@@ -107,8 +107,8 @@ export default async function Accueil() {
               className="entree max-w-xl text-lg leading-8 text-white/75"
               style={{ "--delai": "240ms" } as React.CSSProperties}
             >
-              Parcourez notre stock, consultez chaque fiche en détail et achetez en ligne,
-              de la réservation à la facture.
+              Parcourez notre stock, comparez les véhicules et faites une demande :
+              nous vous recontactons pour en discuter.
             </p>
             <div
               className="entree flex flex-wrap gap-3"
@@ -310,7 +310,7 @@ export default async function Accueil() {
         <Conteneur>
           <Apparition>
             <h2 className="mb-8 text-2xl font-extrabold tracking-tight text-marine-900 sm:text-3xl">
-              Pourquoi acheter sur DriveDeal
+              Pourquoi choisir DriveDeal
             </h2>
           </Apparition>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -335,11 +335,11 @@ export default async function Accueil() {
               Comment ça marche
             </p>
             <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-marine-900 sm:text-3xl">
-              Plus qu’un catalogue : un achat simple, de A à Z.
+              Plus qu’un catalogue : un échange direct avec nous.
             </h2>
             <p className="mt-3 leading-7 text-gris-500">
-              De la découverte du véhicule à la remise de votre facture, chaque étape se
-              fait en ligne.
+              Vous choisissez et comparez en ligne, puis nous discutons ensemble de votre
+              projet.
             </p>
           </Apparition>
           <ol className="space-y-4">

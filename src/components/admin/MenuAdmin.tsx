@@ -12,6 +12,7 @@ type Rubrique = {
 const RUBRIQUES: Rubrique[] = [
   { href: "/admin", libelle: "Tableau de bord" },
   { href: "/admin/vehicules", libelle: "Véhicules" },
+  { href: "/admin/demandes", libelle: "Demandes" },
   { href: "/admin/commandes", libelle: "Commandes", bientot: true },
   { href: "/admin/clients", libelle: "Clients", bientot: true },
   { href: "/admin/journal", libelle: "Journal d'audit", bientot: true },

@@ -1,3 +1,4 @@
+import { TELEPHONE_AFFICHE, TELEPHONE_LIEN } from "@/lib/entreprise";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FormulaireContact } from "@/components/contact/FormulaireContact";
@@ -14,7 +15,7 @@ import { SUJETS } from "@/modules/contact/validation";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Une question sur un véhicule, une commande ou un paiement ? Écrivez-nous via le formulaire de contact DriveDeal.",
+    "Une question sur un véhicule ? Écrivez-nous via le formulaire de contact DriveDeal ou appelez-nous.",
 };
 
 type Props = {
@@ -61,8 +62,8 @@ export default async function PageContact({ searchParams }: Props) {
             Contactez-nous
           </h1>
           <p className="mt-3 max-w-2xl text-white/75">
-            Une question sur un véhicule, une commande ou un paiement ? Écrivez-nous, nous
-            vous répondrons par e-mail.
+            Une question sur un véhicule ? Écrivez-nous, nous vous répondrons par e-mail, ou
+            appelez-nous directement.
           </p>
         </Conteneur>
       </section>
@@ -90,8 +91,12 @@ export default async function PageContact({ searchParams }: Props) {
           <div className="rounded-xl border border-dashed border-gris-300 bg-gris-50 p-5">
             <h2 className="font-bold text-gris-900">Coordonnées de l’entreprise</h2>
             <p className="mt-2 text-sm leading-6 text-gris-500">
-              Adresse, téléphone et horaires seront publiés dès que l’entreprise aura
-              fourni ses informations.
+              Téléphone :{" "}
+              <a href={TELEPHONE_LIEN} className="font-bold text-bleu-600 hover:underline">
+                {TELEPHONE_AFFICHE}
+              </a>
+              . L’adresse et les horaires seront publiés dès que l’entreprise aura fourni
+              ses informations.
             </p>
           </div>
         </aside>

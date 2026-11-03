@@ -62,9 +62,9 @@ export default async function PageCompte() {
           </div>
 
           <div className="rounded-2xl border border-dashed border-gris-300 bg-gris-50 p-6">
-            <h2 className="font-bold text-gris-900">Favoris, commandes et factures</h2>
+            <h2 className="font-bold text-gris-900">Favoris et comparaisons enregistrées</h2>
             <p className="mt-2 text-sm leading-6 text-gris-500">
-              Ces rubriques arriveront avec la commande et le paiement en ligne.
+              Ces rubriques arriveront dans une prochaine étape.
             </p>
           </div>
 

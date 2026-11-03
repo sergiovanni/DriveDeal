@@ -57,8 +57,8 @@ export async function PanneauAuth({ onglet, titre, sousTitre, children }: Props)
             Votre espace <span className="text-ciel-300">DriveDeal</span>.
           </h2>
           <p className="mt-5 text-lg leading-8 text-white/75">
-            Retrouvez vos favoris, suivez vos commandes et accédez à vos factures et aux
-            documents de vos achats, au même endroit.
+            Créez votre compte pour retrouver vos informations et, bientôt, vos favoris
+            et vos comparaisons.
           </p>
         </div>
 
