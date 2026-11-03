@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FormulaireConnexion } from "@/components/auth/FormulaireConnexion";
 import { PanneauAuth } from "@/components/auth/PanneauAuth";
+import { redirigerSiConnecte } from "@/lib/auth/garde";
 import { adresseRedirectionSure } from "@/lib/auth/redirection";
 import { supabaseConfigure } from "@/lib/env";
 
@@ -17,6 +18,8 @@ type Props = {
 export default async function PageConnexion({ searchParams }: Props) {
   // Next.js 16 : searchParams est une promesse, il faut l'attendre.
   const params = await searchParams;
+  // Déjà connecté (vérifié auprès du serveur d'authentification) : direction l'espace client.
+  await redirigerSiConnecte();
   // Valeur non fiable : on ne garde qu'un chemin interne (protection contre la redirection ouverte).
   const redirection = adresseRedirectionSure(params.redirection, "");
   const lienInvalide = params.erreur === "lien-invalide";

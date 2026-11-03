@@ -26,6 +26,20 @@ export async function exigerUtilisateur(
 }
 
 /**
+ * Pages réservées aux visiteurs NON connectés (connexion, inscription…) : si la personne est
+ * déjà connectée, on l'envoie vers son espace.
+ *
+ * Cette vérification se fait ICI (avec `getUser()`, qui interroge le serveur d'authentification)
+ * et non dans proxy.ts (qui ne lit que le cookie). Raison : un cookie périmé ou d'un compte
+ * supprimé paraît « connecté » au proxy mais est refusé par `exigerUtilisateur` ; les deux
+ * redirections se renvoyaient alors la balle à l'infini (boucle « trop de redirections »).
+ */
+export async function redirigerSiConnecte(destination: string = "/compte"): Promise<void> {
+  const utilisateur = await obtenirUtilisateur();
+  if (utilisateur) redirect(destination);
+}
+
+/**
  * Exige un utilisateur connecté POSSÉDANT un rôle.
  * Un utilisateur connecté sans le rôle reçoit une page « introuvable » (404) : on ne révèle
  * pas l'existence de l'espace d'administration.

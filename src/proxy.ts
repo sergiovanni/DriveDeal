@@ -8,7 +8,8 @@ import { rafraichirSession, rediriger } from "@/lib/supabase/proxy";
  * RÔLE : filtre RAPIDE exécuté avant les pages concernées.
  *  1. renouvelle la session de connexion (cookies) ;
  *  2. renvoie vers /connexion les visiteurs non connectés qui demandent une page privée ;
- *  3. renvoie vers /compte les personnes déjà connectées qui demandent /connexion ou /inscription.
+ *  3. (les pages /connexion, /inscription… renvoient elles-mêmes vers /compte les personnes
+ *     déjà connectées, via `redirigerSiConnecte`, pour éviter les boucles de redirection).
  *
  * CE FILTRE NE SUFFIT JAMAIS À PROTÉGER UNE PAGE : Next.js l'exécute aussi sur les liens
  * « préchargés », et une page peut être atteinte autrement. La vraie vérification est refaite
@@ -20,8 +21,6 @@ import { rafraichirSession, rediriger } from "@/lib/supabase/proxy";
 
 /** Préfixes réservés aux personnes connectées. */
 const PREFIXES_PRIVES = ["/compte", "/admin"];
-/** Pages réservées aux personnes NON connectées. */
-const PAGES_INVITES = ["/connexion", "/inscription", "/mot-de-passe-oublie"];
 
 const estPrive = (chemin: string) =>
   PREFIXES_PRIVES.some((p) => chemin === p || chemin.startsWith(`${p}/`));
@@ -41,9 +40,8 @@ export async function proxy(requete: NextRequest) {
   if (privee && !estConnecte) {
     return rediriger(urlConnexion(requete, pathname + search), reponse);
   }
-  if (estConnecte && PAGES_INVITES.includes(pathname)) {
-    return rediriger(new URL("/compte", requete.url), reponse);
-  }
+  // Pas de redirection « déjà connecté → /compte » ici : voir `redirigerSiConnecte` (garde.ts).
+  // Un cookie périmé ferait boucler le proxy et la garde de la page privée.
   return reponse;
 }
 
