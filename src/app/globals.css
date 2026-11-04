@@ -178,6 +178,38 @@ body {
   will-change: transform;
 }
 
+/* Comparateur : la barre flottante monte depuis le bas, les vignettes « rebondissent »
+   à leur arrivée. (Désactivé par la règle « réduire les animations » ci-dessous.) */
+@keyframes monter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rebond {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.barre-comparaison {
+  animation: monter 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.vignette-comparaison {
+  animation: rebond 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

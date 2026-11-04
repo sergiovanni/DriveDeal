@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { BarreComparaison } from "@/components/comparateur/BarreComparaison";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import "./globals.css";
@@ -36,6 +37,8 @@ export default function RootLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        {/* Barre flottante du comparateur (3 véhicules maximum), visible sur tout le site. */}
+        <BarreComparaison />
       </body>
     </html>
   );

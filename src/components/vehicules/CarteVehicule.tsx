@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { BoutonComparer } from "@/components/comparateur/BoutonComparer";
 import { formaterPrix } from "@/lib/money";
+import { versElementComparaison } from "@/modules/comparateur/element";
 import type { Vehicule } from "@/modules/vehicles";
 import { VisuelVehicule } from "./VisuelVehicule";
 
@@ -23,7 +25,12 @@ function Donnee({ libelle, valeur }: { libelle: string; valeur: string }) {
 export function CarteVehicule({ vehicule: v }: { vehicule: Vehicule }) {
   const titre = `${v.marque} ${v.modele}`;
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-gris-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-bleu-500/50 hover:shadow-xl hover:shadow-marine-900/10">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-gris-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-bleu-500/50 hover:shadow-xl hover:shadow-marine-900/10">
+      {/* Bouton « Comparer » : frère du lien (pas dedans) pour rester un vrai bouton accessible. */}
+      <BoutonComparer
+        element={versElementComparaison(v)}
+        className="absolute right-3 top-3 z-20"
+      />
       <Link
         href={`/vehicules/${v.id}`}
         className="flex flex-1 flex-col"

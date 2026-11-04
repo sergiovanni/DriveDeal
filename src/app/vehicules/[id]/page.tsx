@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BoutonComparer } from "@/components/comparateur/BoutonComparer";
 import { Badge } from "@/components/ui/Badge";
 import { Bouton } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { CarteVehicule } from "@/components/vehicules/CarteVehicule";
 import { GalerieVehicule } from "@/components/vehicules/GalerieVehicule";
 import { formaterKilometrage, formaterPrix } from "@/lib/money";
+import { versElementComparaison } from "@/modules/comparateur/element";
 import {
   listerVehicules,
   trouverVehicule,
@@ -249,6 +251,7 @@ export default async function FicheVehicule({ params }: Props) {
             <Bouton disabled taille="lg" className="w-full">
               Acheter
             </Bouton>
+            <BoutonComparer element={versElementComparaison(v)} variante="fiche" />
             <Link
               href={`/contact?sujet=vehicule&vehicule=${v.reference}`}
               className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-gris-300 text-sm font-semibold text-gris-900 hover:bg-gris-50"
