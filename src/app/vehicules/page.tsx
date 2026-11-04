@@ -102,10 +102,34 @@ export default async function PageCatalogue({ searchParams }: Props) {
         </Conteneur>
       </section>
 
-      <Conteneur className="grid gap-8 py-10 lg:grid-cols-[300px_1fr]">
+      {/* « grid-cols-1 » / minmax(0,1fr) : empêche une colonne trop large de faire déborder la page. */}
+      <Conteneur className="grid grid-cols-1 gap-6 py-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-8 lg:py-10">
         {/* Colonne de gauche : formulaire de filtres (GET, sans JavaScript). */}
         <aside>
-          <FiltresVehicules filtres={filtres} options={options} />
+          {/*
+            Sur mobile, les filtres sont repliés derrière un bouton pour que les véhicules
+            apparaissent tout de suite. Technique « case à cocher » : fonctionne sans
+            JavaScript (le libellé coche/décoche la case, qui affiche ou masque le formulaire).
+            Sur grand écran (lg), le formulaire est toujours visible et le bouton disparaît.
+          */}
+          <input
+            id="ouvrir-filtres"
+            type="checkbox"
+            className="peer sr-only"
+            aria-label="Afficher les filtres"
+          />
+          <label
+            htmlFor="ouvrir-filtres"
+            className="flex h-11 cursor-pointer items-center justify-between rounded-xl border border-gris-200 bg-white px-4 text-sm font-semibold text-gris-900 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-bleu-500 lg:hidden"
+          >
+            Filtrer les véhicules
+            <span aria-hidden="true" className="text-bleu-600">
+              ⌄
+            </span>
+          </label>
+          <div className="mt-3 hidden peer-checked:block lg:mt-0 lg:block">
+            <FiltresVehicules filtres={filtres} options={options} />
+          </div>
         </aside>
 
         {/* Colonne de droite : pastilles de filtres, tri, résultats et pagination. */}

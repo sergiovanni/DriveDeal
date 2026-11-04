@@ -30,7 +30,7 @@ export default async function PageCompte() {
         </Conteneur>
       </section>
 
-      <Conteneur className="grid gap-8 py-10 lg:grid-cols-[1fr_320px]">
+      <Conteneur className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section
           aria-labelledby="titre-coordonnees"
           className="min-w-0 rounded-2xl border border-gris-200 bg-white p-6"
