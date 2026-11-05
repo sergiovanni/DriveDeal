@@ -1,4 +1,12 @@
+import Image from "next/image";
+import { IMAGES_NON_OPTIMISEES } from "@/lib/images";
+import type { PhotoVehicule } from "@/modules/vehicles";
+
 type VisuelProps = {
+  /** Photo réelle du véhicule. Sans photo, on affiche la silhouette de démonstration. */
+  photo?: PhotoVehicule;
+  /** Valeur de l'attribut « sizes » de l'image (aide le navigateur à choisir la bonne taille). */
+  tailles?: string;
   teinte: string;
   libelle: string;
   className?: string;
@@ -38,7 +46,25 @@ export function VisuelVehicule({
   libelle,
   className = "",
   flottant,
+  photo,
+  tailles = "(min-width: 1024px) 33vw, 100vw",
 }: VisuelProps) {
+  // Photo réelle : image optimisée par Next.js (taille adaptée à l'écran, format moderne).
+  if (photo) {
+    return (
+      <div className={`relative overflow-hidden bg-gris-100 ${className}`}>
+        <Image
+          src={photo.url}
+          alt={photo.alt}
+          fill
+          sizes={tailles}
+          unoptimized={IMAGES_NON_OPTIMISEES}
+          className="object-cover"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       role="img"

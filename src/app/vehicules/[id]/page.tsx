@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Bouton } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { CarteVehicule } from "@/components/vehicules/CarteVehicule";
-import { VisuelVehicule } from "@/components/vehicules/VisuelVehicule";
+import { GalerieVehicule } from "@/components/vehicules/GalerieVehicule";
 import { formaterKilometrage, formaterPrix } from "@/lib/money";
 import {
   listerVehicules,
@@ -111,23 +111,7 @@ export default async function FicheVehicule({ params }: Props) {
         {/* min-w-0 : sans lui, la colonne d'une grille refuse de rétrécir sous la largeur de son contenu et déborde de l'écran sur mobile. */}
         <div className="min-w-0 space-y-8">
           {/* Galerie : visuel de démonstration en attendant les vraies photos (Supabase Storage). */}
-          <section aria-label="Photos">
-            <VisuelVehicule
-              teinte={v.teinte}
-              libelle={titre}
-              className="h-72 rounded-2xl sm:h-96"
-            />
-            <div className="mt-3 grid grid-cols-3 gap-3">
-              {[2, 3, 4].map((n) => (
-                <div
-                  key={n}
-                  className="flex h-20 items-center justify-center rounded-lg border border-dashed border-gris-300 bg-gris-50 text-xs text-gris-500"
-                >
-                  Photo {n} à venir
-                </div>
-              ))}
-            </div>
-          </section>
+          <GalerieVehicule photos={v.photos} teinte={v.teinte} libelle={titre} />
 
           <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {chiffresCles.map(([cle, valeur]) => (

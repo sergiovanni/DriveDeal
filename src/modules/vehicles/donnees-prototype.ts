@@ -9,6 +9,7 @@ const commun = {
   statut: "publie" as const,
   historique: "Données de démonstration — historique à renseigner.",
   controleTechnique: "Données de démonstration — contrôle technique à renseigner.",
+  photos: [],
   documents: [
     "Rapport d’état du véhicule",
     "Historique d’entretien",

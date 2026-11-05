@@ -16,6 +16,9 @@ export type Boite = (typeof BOITES)[number];
 export type Transmission = (typeof TRANSMISSIONS)[number];
 export type Carrosserie = (typeof CARROSSERIES)[number];
 
+/** Une photo prête à afficher : adresse publique et texte alternatif (accessibilité). */
+export type PhotoVehicule = { url: string; alt: string };
+
 /** Un véhicule tel que les pages le manipulent (indépendant de la façon de le stocker). */
 export type Vehicule = {
   id: string;
@@ -48,4 +51,6 @@ export type Vehicule = {
   controleTechnique: string;
   /** Libellés des documents associés (les fichiers réels viendront de Supabase Storage). */
   documents: string[];
+  /** Photos du véhicule, dans l'ordre d'affichage (la première est la principale). Vide = visuel de démonstration. */
+  photos: PhotoVehicule[];
 };

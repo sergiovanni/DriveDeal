@@ -23,7 +23,32 @@ const entetesSecurite = [
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
 ];
 
+/**
+ * Serveur d'images autorisé : UNIQUEMENT les photos publiques de VOTRE projet Supabase
+ * (bucket « vehicules-photos »). Next.js refuse toute autre adresse, ce qui empêche d'utiliser
+ * le site comme relais pour optimiser des images quelconques.
+ * L'adresse du projet est lue dans NEXT_PUBLIC_SUPABASE_URL ; sans elle, aucune image distante
+ * n'est autorisée (le site fonctionne alors avec les visuels de démonstration).
+ */
+function imagesDistantes(): NonNullable<NextConfig["images"]>["remotePatterns"] {
+  const adresse = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!adresse) return [];
+  try {
+    const { hostname } = new URL(adresse);
+    return [
+      {
+        protocol: "https",
+        hostname,
+        pathname: "/storage/v1/object/public/vehicules-photos/**",
+      },
+    ];
+  } catch {
+    return [];
+  }
+}
+
 const nextConfig: NextConfig = {
+  images: { remotePatterns: imagesDistantes() },
   // Ne pas annoncer la technologie du serveur.
   poweredByHeader: false,
   async headers() {

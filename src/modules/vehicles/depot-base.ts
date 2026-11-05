@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
   equipements,
@@ -9,7 +9,10 @@ import {
   vehicules,
   vehiculesDocuments,
   vehiculesEquipements,
+  vehiculesPhotos,
 } from "@/lib/db/schema";
+import { urlPublique } from "@/lib/supabase/service";
+import { BUCKET_PHOTOS } from "./admin/photos-regles";
 import { versVehicule } from "./mapping";
 import type { Vehicule } from "./types";
 
@@ -63,8 +66,8 @@ export async function chargerVehiculesPublies(): Promise<Vehicule[]> {
   if (lignes.length === 0) return [];
   const ids = lignes.map((l) => l.id);
 
-  // Deux requêtes groupées (au lieu d'une par véhicule) : évite le piège « N+1 ».
-  const [lignesEquipements, lignesDocuments] = await Promise.all([
+  // Requêtes groupées (au lieu d'une par véhicule) : évite le piège « N+1 ».
+  const [lignesEquipements, lignesDocuments, lignesPhotos] = await Promise.all([
     db()
       .select({ vehiculeId: vehiculesEquipements.vehiculeId, nom: equipements.nom })
       .from(vehiculesEquipements)
@@ -83,7 +86,26 @@ export async function chargerVehiculesPublies(): Promise<Vehicule[]> {
           eq(vehiculesDocuments.visibilite, "public"),
         ),
       ),
+    // Photos dans l'ordre d'affichage (la première est la photo principale).
+    db()
+      .select({
+        vehiculeId: vehiculesPhotos.vehiculeId,
+        cle: vehiculesPhotos.cleStockage,
+        alt: vehiculesPhotos.texteAlternatif,
+      })
+      .from(vehiculesPhotos)
+      .where(inArray(vehiculesPhotos.vehiculeId, ids))
+      .orderBy(asc(vehiculesPhotos.vehiculeId), asc(vehiculesPhotos.position)),
   ]);
+
+  // Photos par véhicule, avec leur adresse publique (aucun secret : c'est l'adresse que le
+  // navigateur des visiteurs charge).
+  const photosParVehicule = new Map<string, { url: string; alt: string }[]>();
+  for (const p of lignesPhotos) {
+    const liste = photosParVehicule.get(p.vehiculeId) ?? [];
+    liste.push({ url: urlPublique(BUCKET_PHOTOS, p.cle), alt: p.alt });
+    photosParVehicule.set(p.vehiculeId, liste);
+  }
 
   const parVehicule = <T extends { vehiculeId: string }>(
     rows: T[],
@@ -98,6 +120,11 @@ export async function chargerVehiculesPublies(): Promise<Vehicule[]> {
   const documentsParVehicule = parVehicule(lignesDocuments, (r) => r.libelle);
 
   return lignes.map((l) =>
-    versVehicule(l, equipementsParVehicule.get(l.id), documentsParVehicule.get(l.id)),
+    versVehicule(
+      l,
+      equipementsParVehicule.get(l.id),
+      documentsParVehicule.get(l.id),
+      photosParVehicule.get(l.id),
+    ),
   );
 }

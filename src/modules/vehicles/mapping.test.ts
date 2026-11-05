@@ -54,9 +54,19 @@ describe("versVehicule", () => {
     expect(v.publieLe).toBe("2026-10-01");
   });
 
+  it("recopie les photos dans l'ordre fourni", () => {
+    const photos = [
+      { url: "https://exemple.supabase.co/a.webp", alt: "A" },
+      { url: "https://exemple.supabase.co/b.webp", alt: "B" },
+    ];
+    const v = versVehicule(ligne, [], [], photos);
+    expect(v.photos.map((p) => p.alt)).toEqual(["A", "B"]);
+  });
+
   it("accepte des listes vides par défaut", () => {
     const v = versVehicule(ligne);
     expect(v.equipements).toEqual([]);
     expect(v.documents).toEqual([]);
+    expect(v.photos).toEqual([]);
   });
 });
