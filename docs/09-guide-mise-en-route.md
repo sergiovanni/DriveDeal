@@ -253,3 +253,11 @@ vide, la page affiche « Aucun véhicule » : c'est normal tant qu'aucun véhicu
 | Erreur « prepared statement » en production | Connexion directe utilisée à la place du pooler | `DATABASE_URL` doit être l'adresse pooler (port 6543) |
 | Bouton de contact grisé | `DATABASE_URL` vide | Renseigner `.env.local` puis relancer `npm run dev` |
 | Message « Votre message n'a pas pu être enregistré » | Migration non appliquée ou base inaccessible | Lancer `npm run db:migrate`, consulter les logs du serveur |
+
+## Administration des véhicules
+
+1. Créez votre compte, puis exécutez le SQL de la partie B bis pour recevoir le rôle administrateur.
+2. Connectez-vous et ouvrez `/admin` : « Véhicules » > « Nouveau véhicule ».
+3. Enregistrez le brouillon, ajoutez au moins une photo (JPEG, PNG ou WebP, 5 Mo maximum), puis publiez.
+
+Variables optionnelles : `SUPABASE_SERVICE_ROLE_KEY` (obligatoire pour les photos, serveur uniquement) et `NEXT_PUBLIC_IMAGES_NON_OPTIMISEES=oui` si les photos ne s'affichent pas sur un réseau IPv6/DNS64 (les images sont alors chargées directement depuis Supabase).

@@ -422,6 +422,8 @@ elles restent modifiables.
 | Politique de contenu (CSP) | ⏸ reportée (T-12) |
 | Favoris, adresses de facturation | ⏸ étape 4 |
 
+**Back-office véhicules (ajouté après l'authentification)** : tableau de bord, formulaire, changements de statut, journal d'audit, photos (Storage, URL signées). Réservé aux administrateurs (garde serveur + RLS). Scripts de vérification sur vraie base : `db:verifier-admin` (26/26) et `db:verifier-photos` (19/19). Reste à faire : documents privés (PDF), MFA administrateur, durcissement `anon` (D10).
+
 **Tests réels effectués** (serveur local, sans identifiants) : les 4 pages privées testées
 renvoient vers `/connexion?redirection=…` ; 4 redirections piégées sur 4 ignorées ; un faux lien
 d'e-mail est refusé ; la validation côté serveur renvoie les erreurs champ par champ ; les 5

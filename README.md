@@ -56,6 +56,8 @@ Pour brancher la vraie base (Supabase), suivre le
 | `npm run db:generate` | Génère une migration SQL à partir du schéma |
 | `npm run db:migrate` | Applique les migrations à la base |
 | `npm run db:seed-demo` | Remplit la base de **développement** avec les véhicules de démonstration (voir docs/09) |
+| `npm run db:verifier-admin` | Teste la logique du back-office sur la base de **développement** (`CONFIRMER_TEST_ADMIN=oui`) |
+| `npm run db:verifier-photos` | Teste l'envoi de photos et ses protections sur la base de **développement** (`CONFIRMER_TEST_PHOTOS=oui`) |
 
 Avant chaque commit : `npm run typecheck && npm run lint && npm test`.
 
