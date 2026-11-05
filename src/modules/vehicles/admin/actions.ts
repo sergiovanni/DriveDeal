@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { exigerAdministrateur } from "@/lib/auth/garde";
 import { validerFormulaire } from "@/lib/formulaire";
+import { creerClientSupabaseService } from "@/lib/supabase/service";
+import { BUCKET_PHOTOS } from "./photos-regles";
 import { invaliderCatalogue } from "./cache";
 import {
   changerStatutVehicule,
@@ -196,7 +198,20 @@ export async function supprimerBrouillonAction(
   }
   if (!r.ok) return { statut: "erreur", message: r.erreur };
 
-  // Les fichiers du stockage (photos, documents) seront supprimés avec le module photos.
+  // Les lignes sont supprimées : on retire maintenant les fichiers du stockage. Un échec ici ne
+  // bloque pas la suppression (il ne reste qu'un fichier orphelin invisible, journalisé).
+  try {
+    const stockage = creerClientSupabaseService().storage;
+    if (r.clesPhotos.length > 0) await stockage.from(BUCKET_PHOTOS).remove(r.clesPhotos);
+    if (r.clesDocuments.length > 0)
+      await stockage.from("documents-prives").remove(r.clesDocuments);
+  } catch (erreur) {
+    console.error(
+      "[admin] fichiers non supprimés du stockage",
+      erreur instanceof Error ? erreur.message : "erreur inconnue",
+    );
+  }
+
   invaliderCatalogue();
   redirect("/admin/vehicules?supprime=1");
 }

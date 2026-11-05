@@ -530,7 +530,8 @@ export async function changerStatutVehicule(
 }
 
 export type ResultatSuppression =
-  { ok: true; clesPhotos: string[] } | { ok: false; erreur: string };
+  | { ok: true; clesPhotos: string[]; clesDocuments: string[] }
+  | { ok: false; erreur: string };
 
 /**
  * Supprime DÉFINITIVEMENT un brouillon (RG-V04). Tout autre statut doit être archivé.
@@ -586,7 +587,8 @@ export async function supprimerBrouillon(
     });
     return {
       ok: true,
-      clesPhotos: [...photos.map((p) => p.cle), ...documents.map((d) => d.cle)],
+      clesPhotos: photos.map((p) => p.cle),
+      clesDocuments: documents.map((d) => d.cle),
     };
   });
 }

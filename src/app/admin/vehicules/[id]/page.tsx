@@ -6,9 +6,12 @@ import {
   FormulaireVehicule,
   type ValeursVehicule,
 } from "@/components/admin/FormulaireVehicule";
+import { GaleriePhotos } from "@/components/admin/GaleriePhotos";
 import { PanneauStatut } from "@/components/admin/PanneauStatut";
 import { exigerAdministrateur } from "@/lib/auth/garde";
 import { formaterPrix } from "@/lib/money";
+import { urlPublique } from "@/lib/supabase/service";
+import { BUCKET_PHOTOS } from "@/modules/vehicles/admin/photos-regles";
 import {
   lireVehiculePourAdmin,
   listerNomsMarques,
@@ -139,14 +142,15 @@ export default async function PageVehiculeAdmin({ params, searchParams }: Props)
             peutSupprimer={peutEtreSupprime(vehicule.statut)}
             nombrePhotos={vehicule.nombrePhotos}
           />
-          <div className="rounded-2xl border border-dashed border-gris-300 bg-white p-5">
-            <h2 className="text-base font-bold text-gris-900">Photos</h2>
-            <p className="mt-2 text-sm leading-6 text-gris-500">
-              {vehicule.nombrePhotos} photo{vehicule.nombrePhotos > 1 ? "s" : ""}{" "}
-              enregistrée{vehicule.nombrePhotos > 1 ? "s" : ""}. L’envoi de photos arrive
-              dans la prochaine étape.
-            </p>
-          </div>
+          <GaleriePhotos
+            vehiculeId={vehicule.id}
+            desactive={estVerrouille(vehicule.statut)}
+            photos={vehicule.photos.map((p) => ({
+              id: p.id,
+              url: urlPublique(BUCKET_PHOTOS, p.cleStockage),
+              alt: p.texteAlternatif,
+            }))}
+          />
         </aside>
       </div>
     </>
