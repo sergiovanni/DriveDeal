@@ -107,7 +107,7 @@ export default async function FicheVehicule({ params }: Props) {
         / <span className="text-gris-900">{titre}</span>
       </nav>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
         {/* min-w-0 : sans lui, la colonne d'une grille refuse de rétrécir sous la largeur de son contenu et déborde de l'écran sur mobile. */}
         <div className="min-w-0 space-y-8">
           {/* Galerie : visuel de démonstration en attendant les vraies photos (Supabase Storage). */}

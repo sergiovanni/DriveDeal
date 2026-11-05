@@ -67,7 +67,7 @@ export default async function PageContact({ searchParams }: Props) {
         </Conteneur>
       </section>
 
-      <Conteneur className="grid gap-10 py-12 lg:grid-cols-[1fr_340px]">
+      <Conteneur className="grid grid-cols-1 gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_340px]">
         <section aria-labelledby="titre-formulaire" className="min-w-0">
           <h2 id="titre-formulaire" className="mb-6 text-xl font-bold text-gris-900">
             Envoyer un message
