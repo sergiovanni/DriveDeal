@@ -4,6 +4,7 @@ import type {
   Carrosserie,
   StatutVehicule,
   Transmission,
+  PhotoVehicule,
   Vehicule,
 } from "./types";
 
@@ -78,11 +79,13 @@ export function teinteDepuisCouleur(couleur: string): string {
  * @param ligne      la ligne issue de la requête (marque et modèle joints)
  * @param equipements noms des équipements du véhicule
  * @param documents   libellés des documents publics du véhicule
+ * @param photos      photos du véhicule, déjà ordonnées, avec leur adresse publique
  */
 export function versVehicule(
   ligne: LigneVehicule,
   equipements: string[] = [],
   documents: string[] = [],
+  photos: PhotoVehicule[] = [],
 ): Vehicule {
   // Les colonnes de caractéristiques sont du texte libre en base : on les range dans les
   // types de l'application (les valeurs inattendues passent telles quelles, sans planter).
@@ -115,5 +118,6 @@ export function versVehicule(
     entretien: ligne.entretien,
     controleTechnique: ligne.controleTechnique,
     documents,
+    photos,
   };
 }

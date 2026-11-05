@@ -397,3 +397,34 @@ Conformément à vos contraintes, **aucun code existant n'est réécrit sans jus
 - Seuls seront retouchés, avec justification : `src/lib/env.ts` (défaut E1),
   `src/lib/supabase/*.ts` (défaut E2), `next.config.ts` (E3 et images).
 - **Aucune marketplace**, aucun paiement réel, aucune clé secrète côté client.
+
+## 15. État d'implémentation de l'authentification (2026-11-07)
+
+Les recommandations par défaut ont été appliquées (D1 à D3, D5, D6 sur les points concernés) ;
+elles restent modifiables.
+
+| Élément | État |
+|---|---|
+| Configuration par groupe (défaut E1), clients Supabase propres (E2), en-têtes de sécurité (E3, sans CSP) | ✅ |
+| `src/proxy.ts` : renouvellement de session + filtre des pages privées | ✅ |
+| `src/lib/auth` : `obtenirUtilisateur` (getUser), `exigerUtilisateur`, `exigerRole`, `exigerAdministrateur`, rôles lus en base | ✅ |
+| Protection contre la redirection ouverte | ✅ (testée) |
+| Inscription, connexion, déconnexion (POST), mot de passe oublié, changement de mot de passe | ✅ |
+| Messages identiques que l'adresse existe ou non (anti-énumération) | ✅ |
+| Espace client (`/compte`) : coordonnées, état de confirmation de l'e-mail | ✅ |
+| `/admin` réservé au rôle administrateur (404 pour les autres) | ✅ (page d'accueil seulement) |
+| Bouton « Connexion / Mon compte » dans l'en-tête, sans rendre les pages publiques dynamiques | ✅ |
+| Gestionnaire des liens e-mail (`/auth/confirmation`, formats `code` et `token_hash`) | ✅ |
+| **Flux réel inscription → e-mail → connexion** | ⏸ à tester avec votre adresse (voir docs/09, partie B bis) |
+| **MFA (TOTP) obligatoire pour les administrateurs** | ⏸ non fait |
+| **Limitation de débit applicative** (au-delà de celle de Supabase) | ⏸ non fait |
+| **Migration de durcissement `0004`** (retrait des droits SQL de `anon`) | ⏸ non faite |
+| Politique de contenu (CSP) | ⏸ reportée (T-12) |
+| Favoris, adresses de facturation | ⏸ étape 4 |
+
+**Back-office véhicules (ajouté après l'authentification)** : tableau de bord, formulaire, changements de statut, journal d'audit, photos (Storage, URL signées). Réservé aux administrateurs (garde serveur + RLS). Scripts de vérification sur vraie base : `db:verifier-admin` (26/26) et `db:verifier-photos` (19/19). Reste à faire : documents privés (PDF), MFA administrateur, durcissement `anon` (D10).
+
+**Tests réels effectués** (serveur local, sans identifiants) : les 4 pages privées testées
+renvoient vers `/connexion?redirection=…` ; 4 redirections piégées sur 4 ignorées ; un faux lien
+d'e-mail est refusé ; la validation côté serveur renvoie les erreurs champ par champ ; les 5
+en-têtes de sécurité sont présents.

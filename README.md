@@ -56,6 +56,8 @@ Pour brancher la vraie base (Supabase), suivre le
 | `npm run db:generate` | Génère une migration SQL à partir du schéma |
 | `npm run db:migrate` | Applique les migrations à la base |
 | `npm run db:seed-demo` | Remplit la base de **développement** avec les véhicules de démonstration (voir docs/09) |
+| `npm run db:verifier-admin` | Teste la logique du back-office sur la base de **développement** (`CONFIRMER_TEST_ADMIN=oui`) |
+| `npm run db:verifier-photos` | Teste l'envoi de photos et ses protections sur la base de **développement** (`CONFIRMER_TEST_PHOTOS=oui`) |
 
 Avant chaque commit : `npm run typecheck && npm run lint && npm test`.
 
@@ -70,8 +72,10 @@ src/
     animation/      Apparition au défilement, compteurs, barre de progression
     vehicules/      Cartes, filtres, pagination du catalogue
     contact/        Formulaire de contact
+    auth/           Formulaires du compte (connexion, inscription, profil…)
   modules/        Logique métier, un dossier par domaine (véhicules, contact…)
-  lib/            Outils transverses : base de données, Supabase, variables d'environnement, formats
+  lib/            Outils transverses : base de données, Supabase, authentification (auth/), variables d'environnement, formats
+  proxy.ts        Filtre des pages privées et renouvellement de session (nom Next.js 16 de « middleware »)
 docs/             Documentation du projet (cadrage, règles, architecture, guides)
 drizzle/          Migrations SQL (générées et écrites à la main)
 scripts/          Scripts ponctuels (remplissage de la base de développement)

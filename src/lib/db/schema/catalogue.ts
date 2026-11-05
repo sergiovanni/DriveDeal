@@ -73,7 +73,11 @@ export const vehicules = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     /** Référence lisible (ex. « DD-0004 »), affichée sur la fiche et utilisée au contact. */
-    reference: text("reference").notNull().unique(),
+    reference: text("reference")
+      .notNull()
+      .unique()
+      // Numérotation automatique « DD-0100 », « DD-0101 »… (séquence créée par la migration 0004).
+      .default(sql`'DD-' || lpad(nextval('vehicle_reference_seq')::text, 4, '0')`),
     marqueId: uuid("brand_id")
       .notNull()
       .references(() => marques.id, { onDelete: "restrict" }),

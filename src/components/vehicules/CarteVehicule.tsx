@@ -31,6 +31,7 @@ export function CarteVehicule({ vehicule: v }: { vehicule: Vehicule }) {
       >
         <div className="brillance relative overflow-hidden">
           <VisuelVehicule
+            photo={v.photos[0]}
             teinte={v.teinte}
             libelle={titre}
             className="h-44 transition-transform duration-500 ease-out group-hover:scale-105"

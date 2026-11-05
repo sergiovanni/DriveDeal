@@ -127,6 +127,8 @@ export default async function Accueil() {
               style={{ "--delai": "300ms" } as React.CSSProperties}
             >
               <VisuelVehicule
+                photo={vedette.photos[0]}
+                tailles="(min-width: 1024px) 50vw, 100vw"
                 teinte={vedette.teinte}
                 libelle={`${vedette.marque} ${vedette.modele}`}
                 className="h-72"

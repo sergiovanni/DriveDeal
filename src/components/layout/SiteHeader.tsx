@@ -3,6 +3,7 @@ import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { Logo } from "@/components/ui/Logo";
 import { BarreProgression } from "@/components/animation/BarreProgression";
+import { BoutonsCompte } from "./BoutonsCompte";
 import { NavLiens } from "./NavLiens";
 
 /**
@@ -19,6 +20,10 @@ export function SiteHeader() {
         </Link>
         <div className="flex items-center gap-4">
           <NavLiens />
+          {/* Lien Connexion / Mon compte : visible à partir de la largeur « tablette » ; sur mobile il est dans le menu. */}
+          <div className="hidden md:block">
+            <BoutonsCompte />
+          </div>
           <div className="hidden lg:block">
             <BoutonLien href="/vehicules">Voir le catalogue</BoutonLien>
           </div>

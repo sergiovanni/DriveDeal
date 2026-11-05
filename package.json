@@ -15,7 +15,9 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed-demo": "tsx scripts/seed-demo.ts",
     "env:verifier": "tsx scripts/verifier-env.ts",
-    "db:verifier-securite": "tsx scripts/verifier-securite-base.ts"
+    "db:verifier-securite": "tsx scripts/verifier-securite-base.ts",
+    "db:verifier-admin": "tsx --conditions react-server scripts/verifier-admin-vehicules.ts",
+    "db:verifier-photos": "tsx --conditions react-server scripts/verifier-photos.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
