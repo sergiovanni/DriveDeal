@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/*
+ * Design system DriveDeal — inspiré de la maquette Stitch (bleu nuit + bleu vif).
+ * Identité graphique provisoire (docs/08 I-14) : à ajuster après validation.
+ */
+:root {
+  --marine-950: #060f2b;
+  --marine-900: #0a1a44;
+  --marine-800: #112662;
+  --marine-700: #1a3a8f;
+  --bleu-600: #1f5bff;
+  --bleu-500: #3b74ff;
+  --bleu-100: #e6eeff;
+  --bleu-50: #f2f6ff;
+  --ciel-300: #8fb4ff;
+  --gris-900: #101828;
+  --gris-700: #344054;
+  --gris-500: #667085;
+  --gris-300: #d0d5dd;
+  --gris-200: #e4e7ec;
+  --gris-100: #f2f4f7;
+  --gris-50: #f8f9fb;
+  --succes: #12805c;
+  --alerte: #b54708;
+  --fond: #ffffff;
+  --texte: var(--gris-900);
+}
+
+@theme inline {
+  --color-marine-950: var(--marine-950);
+  --color-marine-900: var(--marine-900);
+  --color-marine-800: var(--marine-800);
+  --color-marine-700: var(--marine-700);
+  --color-bleu-600: var(--bleu-600);
+  --color-bleu-500: var(--bleu-500);
+  --color-bleu-100: var(--bleu-100);
+  --color-bleu-50: var(--bleu-50);
+  --color-ciel-300: var(--ciel-300);
+  --color-gris-900: var(--gris-900);
+  --color-gris-700: var(--gris-700);
+  --color-gris-500: var(--gris-500);
+  --color-gris-300: var(--gris-300);
+  --color-gris-200: var(--gris-200);
+  --color-gris-100: var(--gris-100);
+  --color-gris-50: var(--gris-50);
+  --color-succes: var(--succes);
+  --color-alerte: var(--alerte);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--bleu-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

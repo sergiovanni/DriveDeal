@@ -75,6 +75,10 @@ Décisions **actées** par le cadrage (non à rediscuter) : conserver la stack N
 | 2026-11-06 | Documentation initiale créée (docs 01–08) | Claude Code | Proposé, à relire |
 | 2026-11-06 | Hébergement sur Vercel et base de données Supabase (demande du porteur) | Porteur | ✅ Décidé |
 | 2026-11-06 | Authentification par Supabase Auth ; rôles et permissions dans nos tables | Porteur | ✅ Décidé |
+| 2026-11-06 | Prototype réalisé : interface 100 % en français, logo DriveDeal, style bleu nuit inspiré de la maquette Stitch ; accueil, catalogue (filtres, tri, pagination) et fiche véhicule sur données de démonstration | Claude Code | Prototype, à relire |
+| 2026-11-06 | Du design Stitch, seule l'apparence est reprise : séquestre, KYC, financement et cryptomonnaie ne sont pas dans le cadrage et ne sont pas implémentés | Claude Code | À confirmer |
+| 2026-11-06 | Bouton « Acheter » désactivé et expliqué tant que le parcours de commande et de paiement n'existe pas (pas de bouton factice) | Claude Code | Appliqué |
+| 2026-11-06 | Seconde lecture de la maquette Stitch : reprise des pastilles de filtres, du tri en tête de liste, des chiffres clés et ancres de la fiche, du bloc « documents associés », du récapitulatif de prix et du parcours en étapes. Écartés car inventés ou hors cadrage : témoignages, statistiques fictives, newsletter, financement mensuel, séquestre | Claude Code | Appliqué, à relire |
 | 2026-11-06 | Pas de commit/push ni de développement avant validation des fondations techniques | Claude Code | Proposé |
 
 ## 6. Prochaines étapes suggérées
