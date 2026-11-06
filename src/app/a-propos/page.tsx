@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Apparition } from "@/components/animation/Apparition";
 import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 
@@ -71,15 +72,14 @@ export default function APropos() {
             Nos engagements
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {engagements.map((e) => (
-              <div
-                key={e.titre}
-                className="rounded-xl border border-gris-200 bg-white p-6"
-              >
-                <div className="mb-4 h-1.5 w-10 rounded-full bg-bleu-600" />
-                <h3 className="text-lg font-bold text-gris-900">{e.titre}</h3>
-                <p className="mt-2 text-sm leading-6 text-gris-500">{e.texte}</p>
-              </div>
+            {engagements.map((e, i) => (
+              <Apparition key={e.titre} delai={i * 120} className="h-full">
+                <div className="group h-full rounded-xl border border-gris-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-bleu-500/50 hover:shadow-xl">
+                  <div className="mb-4 h-1.5 w-10 rounded-full bg-bleu-600 transition-all duration-300 group-hover:w-20" />
+                  <h3 className="text-lg font-bold text-gris-900">{e.titre}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gris-500">{e.texte}</p>
+                </div>
+              </Apparition>
             ))}
           </div>
         </Conteneur>
@@ -93,11 +93,13 @@ export default function APropos() {
             </h2>
             <ol className="mt-6 space-y-4">
               {etapes.map((texte, i) => (
-                <li key={texte} className="flex gap-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-bleu-600 text-sm font-bold text-white">
-                    {i + 1}
-                  </span>
-                  <p className="pt-1 text-gris-700">{texte}</p>
+                <li key={texte}>
+                  <Apparition variante="gauche" delai={i * 110} className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-bleu-600 text-sm font-bold text-white">
+                      {i + 1}
+                    </span>
+                    <p className="pt-1 text-gris-700">{texte}</p>
+                  </Apparition>
                 </li>
               ))}
             </ol>

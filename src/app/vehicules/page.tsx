@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Apparition } from "@/components/animation/Apparition";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { CarteVehicule } from "@/components/vehicules/CarteVehicule";
 import { FiltresActifs } from "@/components/vehicules/FiltresActifs";
@@ -125,8 +126,10 @@ export default async function PageCatalogue({ searchParams }: Props) {
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {resultat.vehicules.map((v) => (
-                <CarteVehicule key={v.id} vehicule={v} />
+              {resultat.vehicules.map((v, i) => (
+                <Apparition key={v.id} delai={(i % 3) * 100} className="h-full">
+                  <CarteVehicule vehicule={v} />
+                </Apparition>
               ))}
             </div>
           )}
@@ -142,12 +145,12 @@ export default async function PageCatalogue({ searchParams }: Props) {
 
       <section className="border-t border-gris-200 bg-gris-50 py-10">
         <Conteneur className="grid gap-6 sm:grid-cols-3">
-          {garanties.map((g) => (
-            <div key={g.titre}>
+          {garanties.map((g, i) => (
+            <Apparition key={g.titre} delai={i * 100}>
               <div className="mb-3 h-1.5 w-10 rounded-full bg-bleu-600" />
               <h3 className="font-bold text-gris-900">{g.titre}</h3>
               <p className="mt-1 text-sm leading-6 text-gris-500">{g.texte}</p>
-            </div>
+            </Apparition>
           ))}
         </Conteneur>
       </section>

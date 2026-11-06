@@ -81,6 +81,7 @@ Décisions **actées** par le cadrage (non à rediscuter) : conserver la stack N
 | 2026-11-06 | Seconde lecture de la maquette Stitch : reprise des pastilles de filtres, du tri en tête de liste, des chiffres clés et ancres de la fiche, du bloc « documents associés », du récapitulatif de prix et du parcours en étapes. Écartés car inventés ou hors cadrage : témoignages, statistiques fictives, newsletter, financement mensuel, séquestre | Claude Code | Appliqué, à relire |
 | 2026-11-06 | Page Contact : formulaire validé côté serveur (Zod), message enregistré dans la table `contact_messages` (migration générée, RLS activée), consentement RGPD obligatoire, champ piège anti-robots. Le formulaire reste désactivé tant que la base n'est pas connectée. Aucune notification e-mail à l'entreprise tant que I-13 (prestataire e-mail) n'est pas décidé ; limitation de débit à ajouter | Claude Code | À relire |
 | 2026-11-06 | Page À propos : textes limités à ce qui est dans le cadrage ; histoire, équipe, adresse et garanties laissées en attente (I-01, I-02, I-10) | Claude Code | À relire |
+| 2026-11-06 | Animations : apparition au défilement, compteurs, barre de progression, cartes animées ; réalisées en CSS et petits composants (aucune bibliothèque ajoutée), contenu visible sans JavaScript, animations désactivées si l'utilisateur a demandé de les réduire | Claude Code | Appliqué, à relire |
 | 2026-11-06 | Pas de commit/push ni de développement avant validation des fondations techniques | Claude Code | Proposé |
 
 ## 6. Prochaines étapes suggérées
