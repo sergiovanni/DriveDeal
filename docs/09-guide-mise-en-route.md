@@ -72,6 +72,20 @@ et les tables sensibles n'ont **aucune** politique publique. Le site y accède p
 
 Ne jamais modifier une migration déjà appliquée : en créer une nouvelle.
 
+### Remplir la base de développement (facultatif)
+
+Pour voir le catalogue alimenté par la vraie base avant d'avoir saisi le vrai stock :
+
+```bash
+CONFIRMER_SEED=oui npm run db:seed-demo
+```
+
+Le script ajoute les 12 véhicules de démonstration (marques, modèles, équipements, documents).
+Il peut être relancé sans danger (les véhicules déjà présents sont ignorés). **Ne jamais le
+lancer sur la base de production** : ces véhicules sont fictifs (le script refuse de tourner si
+`NODE_ENV=production`). Pour les retirer, supprimer les véhicules de référence `DD-0001` à
+`DD-0012` depuis le Table Editor de Supabase.
+
 ## Partie C — Tester en local
 
 ```bash
@@ -81,6 +95,13 @@ npm run dev
 Ouvrir <http://localhost:3000/contact> : le bouton « Envoyer le message » est maintenant actif.
 Envoyer un message de test puis vérifier dans Supabase → Table Editor → `contact_messages`
 que la ligne est apparue.
+
+Ouvrir ensuite <http://localhost:3000/vehicules> : dès que `DATABASE_URL` est renseignée, le
+catalogue lit la **base** (et non plus les données de démonstration intégrées). Si la base est
+vide, la page affiche « Aucun véhicule » : c'est normal tant qu'aucun véhicule n'est publié.
+
+> Le catalogue est mis en cache 60 secondes : un véhicule publié peut mettre jusqu'à une minute
+> à apparaître.
 
 ## Partie D — Mettre en ligne sur Vercel
 

@@ -53,6 +53,7 @@ Pour brancher la vraie base (Supabase), suivre le
 | `npm run format` | Reformate le code (Prettier) |
 | `npm run db:generate` | Génère une migration SQL à partir du schéma |
 | `npm run db:migrate` | Applique les migrations à la base |
+| `npm run db:seed-demo` | Remplit la base de **développement** avec les véhicules de démonstration (voir docs/09) |
 
 Avant chaque commit : `npm run typecheck && npm run lint && npm test`.
 
@@ -70,7 +71,9 @@ src/
   modules/        Logique métier, un dossier par domaine (véhicules, contact…)
   lib/            Outils transverses : base de données, Supabase, variables d'environnement, formats
 docs/             Documentation du projet (cadrage, règles, architecture, guides)
-drizzle/          Migrations SQL générées
+drizzle/          Migrations SQL (générées et écrites à la main)
+scripts/          Scripts ponctuels (remplissage de la base de développement)
+tests/            Tests transverses (sécurité des migrations…)
 ```
 
 Principes : les pages ne contiennent pas de règles métier ; chaque module expose son API par

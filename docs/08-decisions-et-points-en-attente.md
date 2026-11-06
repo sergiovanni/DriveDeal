@@ -32,6 +32,7 @@
 | T-04 | Authentification | Supabase Auth (`@supabase/ssr`), rôles/permissions dans nos tables | Auth.js / Better Auth sur la base Supabase | ✅ Décidé par le porteur |
 | T-05 | Tests | Vitest + Playwright | Jest + Cypress | ⏸ À valider |
 | T-06 | Stockage de fichiers | Supabase Storage, fichiers privés via URL signées | S3, Vercel Blob | Proposé (cohérent avec Supabase) |
+| T-11 | Cache des données | `unstable_cache` (60 s) + `revalidate = 60` pour l'instant | `use cache` / Cache Components (recommandé par Next.js 16, structure à adapter) | ⏸ À étudier |
 | T-10 | Tâches planifiées | Vercel Cron (expiration des réservations, outbox, réconciliation) | Service de files externe | Proposé |
 | T-07 | Génération PDF | Bibliothèque PDF côté serveur | HTML→PDF navigateur headless | ⏸ À valider |
 | T-08 | Langue / devise / pays | Français, EUR, France | Multilingue | ⏸ À confirmer |
@@ -84,6 +85,7 @@ Décisions **actées** par le cadrage (non à rediscuter) : conserver la stack N
 | 2026-11-06 | Animations : apparition au défilement, compteurs, barre de progression, cartes animées ; réalisées en CSS et petits composants (aucune bibliothèque ajoutée), contenu visible sans JavaScript, animations désactivées si l'utilisateur a demandé de les réduire | Claude Code | Appliqué, à relire |
 | 2026-11-06 | Documentation de prise en main ajoutée : README, guide Supabase/Vercel (doc 09) et conventions de code (doc 10) ; commentaires en français ajoutés sur les fichiers et sections principales | Claude Code | Appliqué |
 | 2026-11-06 | Schéma de base étendu : catalogue (marques, modèles, véhicules, photos, équipements, documents), comptes (profils, rôles, permissions), favoris ; sécurité par lignes sur toutes les tables ; migrations SQL générées et migrations manuelles (déclencheurs, rôles de départ, stockage). Limites de taille et types de fichiers du stockage proposés par défaut (photos 5 Mo, documents PDF 10 Mo) — à valider. Migrations manuelles non testées sur une vraie base | Claude Code | À relire, à tester sur Supabase |
+| 2026-11-06 | Couche d'accès aux données du catalogue : lecture dans la base si `DATABASE_URL` est renseignée, données de démonstration sinon ; cache 60 s ; script de remplissage de la base de développement protégé (confirmation obligatoire, refus en production). Lecture en base non testée sur une vraie base | Claude Code | À tester sur Supabase |
 | 2026-11-06 | Pas de commit/push ni de développement avant validation des fondations techniques | Claude Code | Proposé |
 
 ## 6. Prochaines étapes suggérées

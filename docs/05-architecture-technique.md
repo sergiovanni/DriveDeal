@@ -139,3 +139,29 @@ Impacts à intégrer dans la conception :
 | Sessions | Si Supabase Auth est retenu, pas de table `sessions` maison (voir doc 06) |
 
 Ces choix remplacent les alternatives non retenues (autre hébergeur, autre base) mais restent à confirmer pour l'ORM (T-03). L'authentification est décidée : Supabase Auth (T-04).
+
+## 9. Accès aux données du catalogue (état de réalisation)
+
+```
+Pages  ──►  src/modules/vehicles/index.ts  ──►  depot.ts
+                                                 ├─ DATABASE_URL vide  ──► données de démonstration
+                                                 └─ DATABASE_URL remplie ► depot-base.ts (Drizzle ► Supabase)
+```
+
+- **Une seule porte d'entrée** : les pages importent `@/modules/vehicles` ; elles ne savent pas
+  d'où viennent les données. Brancher la base n'a demandé aucun changement dans les pages.
+- **Sécurité** : `depot-base.ts` est marqué « server-only » (impossible à embarquer côté
+  navigateur). Il passe par la connexion directe qui contourne la RLS : les filtres
+  `statut = 'publie'` et `visibilité = 'public'` y sont donc **la seule barrière** et ne doivent
+  jamais être retirés.
+- **Requêtes groupées** : une requête pour les véhicules, une pour les équipements, une pour les
+  documents (pas de requête par véhicule).
+- **Cache** : la liste est mise en cache 60 s (`unstable_cache`, étiquette `vehicules`) et les
+  pages sont régénérées toutes les 60 s (`revalidate = 60`). Les futures actions
+  d'administration invalideront l'étiquette pour une mise à jour immédiate.
+- **Erreurs** : si la base est configurée mais injoignable, l'erreur remonte (page d'erreur)
+  plutôt que d'afficher silencieusement de fausses données. Seul le pré-calcul des fiches au
+  moment du build est tolérant (les fiches sont alors générées à la première visite).
+- **Décision à valider (T-11)** : Next.js 16 recommande le nouveau système de cache
+  `use cache` (« Cache Components »), qui change plusieurs règles de rendu. `unstable_cache`
+  est conservé pour l'instant ; la migration sera étudiée à part.
