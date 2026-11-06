@@ -13,9 +13,9 @@ export function SiteHeader() {
         </Link>
         <div className="flex items-center gap-4">
           <NavLiens />
-          <BoutonLien href="/vehicules" className="hidden sm:inline-flex">
-            Voir le catalogue
-          </BoutonLien>
+          <div className="hidden lg:block">
+            <BoutonLien href="/vehicules">Voir le catalogue</BoutonLien>
+          </div>
         </div>
       </Conteneur>
     </header>
