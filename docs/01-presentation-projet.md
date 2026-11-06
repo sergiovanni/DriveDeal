@@ -65,3 +65,4 @@ Site public, catalogue, recherche/filtres, fiche véhicule, comptes clients, fav
 | 08-decisions-et-points-en-attente.md | Ambiguïtés, décisions à valider, informations manquantes |
 | 09-guide-mise-en-route.md | Brancher Supabase, déployer sur Vercel, checklist de mise en production |
 | 10-conventions-de-code.md | Façon d'écrire, de commenter et de sécuriser le code |
+| 11-proposition-architecture-backend.md | **Proposition en attente de validation** : backend Supabase + Vercel, rôles, RLS, environnements, étapes |

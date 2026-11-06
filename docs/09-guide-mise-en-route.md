@@ -30,19 +30,52 @@ commandes, etc.
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Réglages → API → clé « anon » / « publishable » | Publique (protégée par les règles RLS) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Réglages → API → clé « service_role » | **Secrète** : contourne toutes les protections |
 | `DATABASE_URL` | Bouton « Connect » → chaîne de connexion **pooler / transaction** (port 6543) | **Secrète** |
-| `DATABASE_DIRECT_URL` | Bouton « Connect » → chaîne de connexion **directe** (port 5432) | **Secrète** |
+| `DATABASE_DIRECT_URL` | Bouton « Connect » → chaîne de connexion **directe** (port 5432) ; **si elle échoue** (réseau sans IPv6), le **« Session pooler »** (port 5432) | **Secrète** |
 
 > La chaîne de connexion contient `[YOUR-PASSWORD]` : le remplacer par le mot de passe de la
 > base choisi à l'étape 3.
 
 ### Renseigner `.env.local`
 
-```bash
-cp .env.example .env.local
-```
+1. Créer le fichier à partir du modèle (dans le dossier du projet) :
 
-Ouvrir `.env.local` et coller les valeurs. **Ce fichier est ignoré par git** : ne jamais le
-commiter, ne jamais envoyer ces clés par message ou par e-mail.
+   ```powershell
+   Copy-Item .env.example .env.local
+   ```
+
+   (Mac / Linux : `cp .env.example .env.local`)
+2. Ouvrir `.env.local` dans l'éditeur et coller les 5 valeurs du tableau ci-dessus, **sans
+   guillemets** et **sans espace** autour du `=`.
+3. **Vérifier** sans rien afficher de secret :
+
+   ```bash
+   npm run env:verifier
+   ```
+
+   La commande contrôle le format de chaque variable, puis teste les vraies connexions (base de
+   données, API Supabase, clé secrète). Elle détecte en particulier l'erreur la plus dangereuse :
+   la clé **secrète** collée à la place de la clé **publique**. Son résultat peut être copié dans
+   une conversation sans risque (aucune valeur secrète n'y figure).
+
+**Ce fichier est ignoré par git** : ne jamais le commiter, ne jamais envoyer ces clés par
+message ou par e-mail.
+
+### Pièges fréquents
+
+| Symptôme | Cause | Solution |
+|---|---|---|
+| « [YOUR-PASSWORD] n'a pas été remplacé » | Le texte entre crochets est resté dans l'adresse | Le remplacer (crochets compris) par le mot de passe de la base |
+| « Adresse illisible » ou « Mot de passe refusé » | Mot de passe contenant `@ : / ? # %` | Encoder ces caractères (`@` → `%40`, `:` → `%3A`, `/` → `%2F`) ou changer le mot de passe pour des lettres et chiffres (Réglages → Database → Reset password) |
+| « Serveur introuvable » / « ne répond pas » sur `DATABASE_DIRECT_URL` | La connexion directe utilise IPv6, absent de beaucoup de réseaux | Utiliser le **Session pooler** (port 5432) |
+| « Tenant or user not found » | Adresse du pooler recopiée de travers (utilisateur ou région) | Recopier l'adresse exacte depuis le bouton « Connect » |
+| « C'est la clé SECRÈTE… » | Clés inversées | Remettre la clé publique dans `NEXT_PUBLIC_SUPABASE_ANON_KEY` et la secrète dans `SUPABASE_SERVICE_ROLE_KEY` |
+| Le site ne voit pas les nouvelles valeurs | Next.js ne relit pas `.env.local` en cours de route | Arrêter puis relancer `npm run dev` |
+
+### Un projet pour le développement, un autre pour la production
+
+`.env.local` ne contient **que** les valeurs du projet **de développement**. Les valeurs du projet
+de production se saisissent **uniquement dans Vercel** (partie D), jamais dans un fichier du
+dépôt ni sur l'ordinateur de développement.
 
 ## Partie B — Créer les tables
 

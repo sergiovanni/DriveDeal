@@ -51,6 +51,7 @@ Pour brancher la vraie base (Supabase), suivre le
 | `npm run typecheck` | Vérifie les types TypeScript |
 | `npm test` | Lance les tests (Vitest) |
 | `npm run format` | Reformate le code (Prettier) |
+| `npm run env:verifier` | Vérifie `.env.local` (format puis connexions réelles), sans afficher de secret |
 | `npm run db:generate` | Génère une migration SQL à partir du schéma |
 | `npm run db:migrate` | Applique les migrations à la base |
 | `npm run db:seed-demo` | Remplit la base de **développement** avec les véhicules de démonstration (voir docs/09) |
@@ -94,6 +95,7 @@ serveur. Détails dans les [conventions de code](docs/10-conventions-de-code.md)
 | [08 — Décisions et points en attente](docs/08-decisions-et-points-en-attente.md) | Ce qui reste à décider ou à fournir |
 | [09 — Guide de mise en route](docs/09-guide-mise-en-route.md) | Brancher Supabase, déployer sur Vercel |
 | [10 — Conventions de code](docs/10-conventions-de-code.md) | Façon d'écrire et de commenter le code |
+| [11 — Architecture backend (proposition)](docs/11-proposition-architecture-backend.md) | Authentification, rôles, RLS, stockage, environnements — **en attente de validation** |
 
 ## Règles à ne pas oublier
 
