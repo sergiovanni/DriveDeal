@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DriveDeal
 
-## Getting Started
+Plateforme e-commerce de **vente de véhicules d'occasion** : catalogue détaillé, achat en ligne,
+paiement sécurisé, factures et espace d'administration.
 
-First, run the development server:
+> **État du projet : prototype.** Le site public est navigable (accueil, catalogue avec filtres,
+> fiches véhicules, À propos, Contact). Les véhicules affichés sont des **données de
+> démonstration**. Les comptes, la commande, le paiement, la facturation et le back-office ne
+> sont pas encore développés. Voir la [feuille de route](docs/07-roadmap.md).
+
+## Stack
+
+| Rôle | Choix |
+|---|---|
+| Framework | Next.js 16 (App Router), React 19, TypeScript strict |
+| Style | Tailwind CSS 4 |
+| Base de données | Supabase (PostgreSQL) |
+| Accès aux données | Drizzle ORM (schéma et migrations en TypeScript/SQL) |
+| Authentification | Supabase Auth (à brancher) |
+| Hébergement | Vercel |
+| Validation | Zod |
+| Tests | Vitest |
+
+> ⚠️ Cette version de Next.js a des changements importants par rapport aux versions
+> précédentes (par exemple `middleware` s'appelle maintenant `proxy`). Avant de coder une
+> fonctionnalité Next.js, lire le guide correspondant dans `node_modules/next/dist/docs/`.
+
+## Démarrage rapide
+
+Prérequis : **Node.js 22 ou plus** et npm.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site s'ouvre sur <http://localhost:3000>. Il fonctionne **sans base de données** : le
+catalogue lit alors les véhicules de démonstration et le formulaire de contact est désactivé.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pour brancher la vraie base (Supabase), suivre le
+[guide de mise en route](docs/09-guide-mise-en-route.md).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Commandes
 
-## Learn More
+| Commande | Rôle |
+|---|---|
+| `npm run dev` | Lance le site en développement |
+| `npm run build` | Construit la version de production |
+| `npm run start` | Lance la version construite |
+| `npm run lint` | Vérifie le style et les erreurs courantes (ESLint) |
+| `npm run typecheck` | Vérifie les types TypeScript |
+| `npm test` | Lance les tests (Vitest) |
+| `npm run format` | Reformate le code (Prettier) |
+| `npm run db:generate` | Génère une migration SQL à partir du schéma |
+| `npm run db:migrate` | Applique les migrations à la base |
 
-To learn more about Next.js, take a look at the following resources:
+Avant chaque commit : `npm run typecheck && npm run lint && npm test`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Organisation du code
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/            Pages et mises en page (routage Next.js). Peu de logique : elles appellent les modules.
+  components/     Composants d'interface réutilisables
+    ui/             Éléments de base (bouton, badge, logo, conteneur)
+    layout/         En-tête, pied de page, navigation
+    animation/      Apparition au défilement, compteurs, barre de progression
+    vehicules/      Cartes, filtres, pagination du catalogue
+    contact/        Formulaire de contact
+  modules/        Logique métier, un dossier par domaine (véhicules, contact…)
+  lib/            Outils transverses : base de données, Supabase, variables d'environnement, formats
+docs/             Documentation du projet (cadrage, règles, architecture, guides)
+drizzle/          Migrations SQL générées
+```
 
-## Deploy on Vercel
+Principes : les pages ne contiennent pas de règles métier ; chaque module expose son API par
+un fichier `index.ts` ; tout ce qui vient de l'extérieur (adresse, formulaire) est validé côté
+serveur. Détails dans les [conventions de code](docs/10-conventions-de-code.md).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Document | Contenu |
+|---|---|
+| [01 — Présentation](docs/01-presentation-projet.md) | Vision, objectifs, périmètre |
+| [02 — Besoins](docs/02-expression-des-besoins.md) | Besoins fonctionnels et non fonctionnels, risques |
+| [03 — Cahier des charges](docs/03-cahier-des-charges-fonctionnel.md) | Modules et critères d'acceptation |
+| [04 — Règles de gestion](docs/04-regles-de-gestion.md) | Règles métier, statuts de commande |
+| [05 — Architecture](docs/05-architecture-technique.md) | Stack, architecture, sécurité |
+| [06 — Modèle de données](docs/06-modele-de-donnees.md) | Tables et relations |
+| [07 — Roadmap](docs/07-roadmap.md) | Modules, dépendances, backlog |
+| [08 — Décisions et points en attente](docs/08-decisions-et-points-en-attente.md) | Ce qui reste à décider ou à fournir |
+| [09 — Guide de mise en route](docs/09-guide-mise-en-route.md) | Brancher Supabase, déployer sur Vercel |
+| [10 — Conventions de code](docs/10-conventions-de-code.md) | Façon d'écrire et de commenter le code |
+
+## Règles à ne pas oublier
+
+- Une commande créée n'est **pas** une commande payée : un paiement n'est confirmé que par le
+  prestataire de paiement, côté serveur.
+- Aucune donnée bancaire n'est stockée.
+- Aucune facture avec des informations fiscales supposées.
+- Pas de bouton ni de fonction factice : ce qui n'existe pas encore est désactivé et expliqué.
+- Tout ce qui n'est pas validé par l'entreprise est consigné dans le
+  [document 08](docs/08-decisions-et-points-en-attente.md) au lieu d'être inventé.
