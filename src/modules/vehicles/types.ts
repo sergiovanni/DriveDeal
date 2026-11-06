@@ -1,12 +1,22 @@
-/** Statuts d'un véhicule (docs/04 RG-V02). Seul « publie » est visible au catalogue. */
-export type StatutVehicule = "brouillon" | "publie" | "reserve" | "vendu" | "archive";
+import type {
+  BOITES,
+  CARBURANTS,
+  CARROSSERIES,
+  STATUTS_VEHICULE,
+  TRANSMISSIONS,
+} from "@/lib/db/schema/constantes";
 
-export type Carburant = "Essence" | "Diesel" | "Hybride" | "Électrique";
-export type Boite = "Manuelle" | "Automatique";
-export type Transmission = "Traction" | "Propulsion" | "Intégrale";
-export type Carrosserie =
-  "Berline" | "SUV" | "Break" | "Coupé" | "Citadine" | "Cabriolet";
+// Les types sont déduits des listes de constantes partagées avec la base de données
+// (src/lib/db/schema/constantes.ts) : une seule source de vérité.
 
+/** Statut d'un véhicule (docs/04 RG-V02). Seul « publie » est visible au catalogue. */
+export type StatutVehicule = (typeof STATUTS_VEHICULE)[number];
+export type Carburant = (typeof CARBURANTS)[number];
+export type Boite = (typeof BOITES)[number];
+export type Transmission = (typeof TRANSMISSIONS)[number];
+export type Carrosserie = (typeof CARROSSERIES)[number];
+
+/** Un véhicule tel que les pages le manipulent (indépendant de la façon de le stocker). */
 export type Vehicule = {
   id: string;
   reference: string;

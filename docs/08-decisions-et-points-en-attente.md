@@ -83,6 +83,7 @@ Décisions **actées** par le cadrage (non à rediscuter) : conserver la stack N
 | 2026-11-06 | Page À propos : textes limités à ce qui est dans le cadrage ; histoire, équipe, adresse et garanties laissées en attente (I-01, I-02, I-10) | Claude Code | À relire |
 | 2026-11-06 | Animations : apparition au défilement, compteurs, barre de progression, cartes animées ; réalisées en CSS et petits composants (aucune bibliothèque ajoutée), contenu visible sans JavaScript, animations désactivées si l'utilisateur a demandé de les réduire | Claude Code | Appliqué, à relire |
 | 2026-11-06 | Documentation de prise en main ajoutée : README, guide Supabase/Vercel (doc 09) et conventions de code (doc 10) ; commentaires en français ajoutés sur les fichiers et sections principales | Claude Code | Appliqué |
+| 2026-11-06 | Schéma de base étendu : catalogue (marques, modèles, véhicules, photos, équipements, documents), comptes (profils, rôles, permissions), favoris ; sécurité par lignes sur toutes les tables ; migrations SQL générées et migrations manuelles (déclencheurs, rôles de départ, stockage). Limites de taille et types de fichiers du stockage proposés par défaut (photos 5 Mo, documents PDF 10 Mo) — à valider. Migrations manuelles non testées sur une vraie base | Claude Code | À relire, à tester sur Supabase |
 | 2026-11-06 | Pas de commit/push ni de développement avant validation des fondations techniques | Claude Code | Proposé |
 
 ## 6. Prochaines étapes suggérées

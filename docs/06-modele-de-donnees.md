@@ -101,3 +101,43 @@ Données personnelles : `users`, `addresses`, `orders` (snapshots), `invoices` (
 ## 5. Points ouverts
 
 Voir doc 08 : frais complémentaires, acompte (nouveaux types de paiement), régime TVA (champs de facture), documents automobiles, séries de numérotation, champs obligatoires du véhicule.
+
+## 6. État d'implémentation (schéma Drizzle + migrations)
+
+Le schéma est écrit en TypeScript dans `src/lib/db/schema/` et traduit en SQL dans `drizzle/`.
+
+| Fichier du schéma | Tables | Migration |
+|---|---|---|
+| `contact.ts` | `contact_messages` | `0000_messages_contact.sql` |
+| `catalogue.ts` | `brands`, `models`, `vehicles`, `equipments`, `vehicle_equipments`, `vehicle_photos`, `vehicle_documents` | `0001_catalogue_comptes_favoris.sql` |
+| `comptes.ts` | `profiles`, `roles`, `permissions`, `role_permissions`, `user_roles` | `0001_…` |
+| `favoris.ts` | `favorites` | `0001_…` |
+| — (SQL écrit à la main) | déclencheurs `updated_at`, création du profil à l'inscription, rôles `client` et `administrateur` | `0002_automatismes_et_roles.sql` |
+| — (SQL écrit à la main) | espaces de stockage `vehicules-photos` (public) et `documents-prives` (privé) | `0003_stockage_fichiers.sql` |
+
+**Pas encore implémentés** (décisions métier en attente, docs/08) : `orders`, `order_items`,
+`order_status_history`, `payments`, `payment_events`, `refunds`, `invoices`, `invoice_lines`,
+`credit_notes`, `documents` de commande, `domain_events`, `email_logs`, `audit_logs`,
+`settings`, `legal_documents`, `vehicle_fees`.
+
+### Choix de réalisation
+
+- **Noms** : les colonnes et tables sont en anglais dans la base (convention SQL courante) ;
+  les propriétés TypeScript sont en français (`prixCentimes` ↔ `price_cents`).
+- **Statut du véhicule** : colonne `statut` avec contrainte `CHECK` sur les 5 valeurs
+  proposées (`brouillon`, `publie`, `reserve`, `vendu`, `archive`). Les autres caractéristiques
+  (carburant, boîte, carrosserie…) restent du texte libre tant que les catégories ne sont pas
+  validées.
+- **Sécurité** : RLS activée sur **toutes** les tables (vérifié par
+  `tests/securite-migrations.test.ts`). Lecture publique limitée aux véhicules publiés et à
+  leurs éléments liés ; aucune politique d'écriture publique ; favoris et profil limités à leur
+  propriétaire.
+- **Comptes** : l'identité est dans `auth.users` (Supabase Auth). `profiles.id` en est la
+  référence ; un déclencheur crée le profil et le rôle « client » à chaque inscription.
+- **Mise à jour des dates** : `updated_at` est géré par un déclencheur de la base.
+- **Photos et documents** : la base ne garde que la clé du fichier ; le fichier vit dans
+  Supabase Storage.
+
+> ⚠️ Les migrations `0002` et `0003` sont écrites à la main pour Supabase. Elles n'ont pas pu
+> être exécutées sur une vraie base lors de leur rédaction : à vérifier lors de la première
+> application (`npm run db:migrate`) sur le projet de développement.
