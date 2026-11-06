@@ -11,6 +11,11 @@ const liens = [
   { href: "/contact", libelle: "Contact" },
 ];
 
+/**
+ * Navigation principale : barre horizontale (≥ 768 px) ou menu déroulant (mobile).
+ * Composant client car il lit l'adresse courante (pour surligner la page active)
+ * et gère l'ouverture du menu mobile.
+ */
 export function NavLiens() {
   const chemin = usePathname();
   const [ouvert, setOuvert] = useState(false);

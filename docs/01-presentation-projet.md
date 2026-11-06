@@ -63,3 +63,5 @@ Site public, catalogue, recherche/filtres, fiche véhicule, comptes clients, fav
 | 06-modele-de-donnees.md | Modèle de données initial |
 | 07-roadmap.md | Modules, dépendances, backlog |
 | 08-decisions-et-points-en-attente.md | Ambiguïtés, décisions à valider, informations manquantes |
+| 09-guide-mise-en-route.md | Brancher Supabase, déployer sur Vercel, checklist de mise en production |
+| 10-conventions-de-code.md | Façon d'écrire, de commenter et de sécuriser le code |

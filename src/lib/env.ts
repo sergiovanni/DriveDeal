@@ -16,6 +16,7 @@ const serveurSchema = z.object({
 
 export type EnvServeur = z.infer<typeof serveurSchema>;
 
+/** Lit et valide les variables d'environnement. Lève une erreur claire si une valeur manque. */
 export function lireEnvServeur(source: NodeJS.ProcessEnv = process.env): EnvServeur {
   const resultat = serveurSchema.safeParse(source);
   if (!resultat.success) {

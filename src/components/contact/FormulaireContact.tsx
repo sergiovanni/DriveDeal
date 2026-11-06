@@ -26,6 +26,14 @@ type Props = {
   vehiculeInitial?: string;
 };
 
+/**
+ * Formulaire de contact (composant client).
+ * - `useActionState` relie le formulaire à l'action serveur `envoyerMessage`.
+ * - La validation se fait côté serveur ; les erreurs reviennent dans `etat.erreurs`
+ *   et sont affichées sous chaque champ (accessibilité : aria-invalid / aria-describedby).
+ * - Les valeurs saisies sont renvoyées par le serveur pour ne pas vider le formulaire.
+ * - Un champ piège invisible (`site_web`) sert d'anti-robots.
+ */
 export function FormulaireContact({ actif, sujetInitial, vehiculeInitial }: Props) {
   const [etat, action, enCours] = useActionState(envoyerMessage, etatInitial);
 

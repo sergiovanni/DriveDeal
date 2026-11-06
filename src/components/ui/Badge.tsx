@@ -10,6 +10,10 @@ const tons = {
   alerte: "bg-amber-50 text-alerte",
 };
 
+/**
+ * Petite étiquette arrondie (année, carburant, statut…).
+ * Le paramètre `ton` choisit la couleur : neutre, bleu, succès ou alerte.
+ */
 export function Badge({ ton = "neutre", children }: BadgeProps) {
   return (
     <span

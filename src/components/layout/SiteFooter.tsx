@@ -12,8 +12,13 @@ function Colonne({ titre, children }: { titre: string; children: React.ReactNode
   );
 }
 
-export function SiteFooter() {
-  const carrosseries = valeursDistinctes(listerVehicules(), "carrosserie");
+/**
+ * Pied de page : présentation, navigation et liens vers le catalogue par carrosserie.
+ * Les carrosseries sont calculées à partir des véhicules publiés, donc la liste
+ * se met à jour toute seule quand le stock change.
+ */
+export async function SiteFooter() {
+  const carrosseries = valeursDistinctes(await listerVehicules(), "carrosserie");
 
   return (
     <footer className="bg-marine-950 text-white/70">

@@ -3,6 +3,11 @@
 import { Bouton } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 
+/**
+ * Page d'erreur de secours (convention Next.js : error.tsx).
+ * Doit être un composant client. `unstable_retry` est fourni par Next.js 16 :
+ * il retente le rendu de la page sans recharger tout le site.
+ */
 export default function ErreurPage({ unstable_retry }: { unstable_retry: () => void }) {
   return (
     <Conteneur className="flex flex-col items-center gap-4 py-24 text-center">

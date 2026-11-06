@@ -12,6 +12,7 @@ export function formaterPrix(centimes: number, devise = "EUR"): string {
     .replace(/ /g, " ");
 }
 
+/** Formate un kilométrage : 42000 -> « 42 000 km » (espace insécable). */
 export function formaterKilometrage(km: number): string {
   return `${new Intl.NumberFormat("fr-FR").format(km).replace(/ /g, " ")} km`;
 }

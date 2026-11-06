@@ -4,6 +4,13 @@ import { Apparition } from "@/components/animation/Apparition";
 import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 
+/**
+ * Page « À propos ».
+ * Contenu volontairement limité à ce que prévoit le cahier des charges : l'histoire,
+ * l'équipe, l'adresse et les garanties de l'entreprise seront ajoutées quand elles
+ * auront été fournies (voir docs/08, points I-01, I-02 et I-10).
+ */
+// Métadonnées de la page (titre et description pour les moteurs de recherche).
 export const metadata: Metadata = {
   title: "À propos",
   description:

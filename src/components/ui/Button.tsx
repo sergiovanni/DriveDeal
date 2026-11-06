@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 type Variante = "primaire" | "secondaire" | "contour" | "fantome";
 type Taille = "md" | "lg";
 
+// Classes communes à tous les boutons ; chaque variante et chaque taille s'y ajoutent.
 const base =
   "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -19,6 +20,7 @@ const tailles: Record<Taille, string> = {
   lg: "h-12 px-6 text-base",
 };
 
+/** Assemble les classes d'un bouton. Exporté pour styler d'autres éléments comme un bouton. */
 export function classesBouton(variante: Variante = "primaire", taille: Taille = "md") {
   return `${base} ${variantes[variante]} ${tailles[taille]}`;
 }
@@ -45,6 +47,7 @@ type BoutonProps = ComponentProps<"button"> & {
   taille?: Taille;
 };
 
+/** Vrai bouton (<button>) : à utiliser pour une action, par exemple l'envoi d'un formulaire. */
 export function Bouton({ variante, taille, className = "", ...props }: BoutonProps) {
   return (
     <button className={`${classesBouton(variante, taille)} ${className}`} {...props} />

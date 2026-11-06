@@ -10,6 +10,7 @@ const inter = Inter({
   display: "swap",
 });
 
+// Métadonnées par défaut : le titre de chaque page est complété par « | DriveDeal ».
 export const metadata: Metadata = {
   title: {
     default: "DriveDeal — Véhicules d'occasion en ligne",
@@ -19,6 +20,11 @@ export const metadata: Metadata = {
     "Trouvez, réservez et achetez votre véhicule d'occasion en ligne : catalogue détaillé, paiement sécurisé et documents disponibles dans votre espace.",
 };
 
+/**
+ * Mise en page racine, commune à toutes les pages :
+ * police Inter, métadonnées par défaut (titre « … | DriveDeal »), en-tête et pied de page.
+ * `lang="fr"` indique la langue aux navigateurs et aux lecteurs d'écran.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

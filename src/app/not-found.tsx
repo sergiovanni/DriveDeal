@@ -1,6 +1,10 @@
 import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 
+/**
+ * Page 404. Next.js l'affiche pour toute adresse inconnue et quand une page
+ * appelle `notFound()` (ex. fiche d'un véhicule qui n'existe pas).
+ */
 export default function PageIntrouvable() {
   return (
     <Conteneur className="flex flex-col items-center gap-4 py-24 text-center">

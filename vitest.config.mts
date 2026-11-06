@@ -3,7 +3,12 @@ import path from "node:path";
 
 export default defineConfig({
   resolve: {
-    alias: { "@": path.resolve(__dirname, "src") },
+    alias: {
+      // Même alias que dans tsconfig.json : « @/ » désigne le dossier src.
+      "@": path.resolve(__dirname, "src"),
+      // Le paquet « server-only » refuse de se charger hors de Next.js : on le neutralise.
+      "server-only": path.resolve(__dirname, "tests/vide.ts"),
+    },
   },
   test: {
     environment: "node",

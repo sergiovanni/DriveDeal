@@ -15,13 +15,31 @@ import {
 
 type Props = { params: Promise<{ id: string }> };
 
-export function generateStaticParams() {
-  return listerVehicules().map((v) => ({ id: v.id }));
+/**
+ * Fiche détaillée d'un véhicule : /vehicules/[id].
+ * - `generateStaticParams` pré-génère une page par véhicule publié (rapide et bon pour le SEO).
+ * - `generateMetadata` fournit le titre et la description de chaque fiche.
+ * - Un identifiant inconnu ou non publié renvoie la page 404 (`notFound()`).
+ */
+// La fiche est régénérée au plus toutes les 60 s (nouveau prix, véhicule vendu, etc.).
+export const revalidate = 60;
+
+// Pré-génère une page par véhicule publié au moment du build.
+// Si la base est injoignable pendant la construction, on ne bloque pas le déploiement :
+// les fiches seront alors générées à la première visite.
+export async function generateStaticParams() {
+  try {
+    return (await listerVehicules()).map((v) => ({ id: v.id }));
+  } catch {
+    return [];
+  }
 }
 
+// Titre et description propres à chaque fiche (ex. « BMW Série 3 320d … | DriveDeal »).
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Next.js 16 : params est une promesse, il faut l'attendre.
   const { id } = await params;
-  const v = trouverVehicule(id);
+  const v = await trouverVehicule(id);
   if (!v) return { title: "Véhicule introuvable" };
   return {
     title: `${v.marque} ${v.modele} ${v.version}`,
@@ -31,11 +49,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FicheVehicule({ params }: Props) {
   const { id } = await params;
-  const v = trouverVehicule(id);
+  const v = await trouverVehicule(id);
   if (!v) notFound();
 
   const titre = `${v.marque} ${v.modele}`;
-  const similaires = vehiculesSimilaires(listerVehicules(), v);
+  const similaires = vehiculesSimilaires(await listerVehicules(), v);
 
   const caracteristiques: [string, string][] = [
     ["Année", String(v.annee)],
@@ -52,6 +70,7 @@ export default async function FicheVehicule({ params }: Props) {
     ["Référence", v.reference],
   ];
 
+  // Quatre chiffres clés affichés en tuiles sous la galerie.
   const chiffresCles: [string, string][] = [
     ["Puissance", `${v.puissanceCh} ch`],
     ["Kilométrage", formaterKilometrage(v.kilometrage)],
@@ -59,6 +78,7 @@ export default async function FicheVehicule({ params }: Props) {
     ["Boîte", v.boite],
   ];
 
+  // Ancres de la navigation interne de la fiche (identifiant de section, libellé).
   const sections: [string, string][] = [
     ["caracteristiques", "Caractéristiques"],
     ["equipements", "Équipements"],
@@ -75,6 +95,7 @@ export default async function FicheVehicule({ params }: Props) {
 
   return (
     <Conteneur className="py-8">
+      {/* Fil d'Ariane. */}
       <nav aria-label="Fil d’Ariane" className="mb-6 text-sm text-gris-500">
         <Link href="/" className="hover:text-bleu-600">
           Accueil
@@ -87,7 +108,9 @@ export default async function FicheVehicule({ params }: Props) {
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-        <div className="space-y-8">
+        {/* min-w-0 : sans lui, la colonne d'une grille refuse de rétrécir sous la largeur de son contenu et déborde de l'écran sur mobile. */}
+        <div className="min-w-0 space-y-8">
+          {/* Galerie : visuel de démonstration en attendant les vraies photos (Supabase Storage). */}
           <section aria-label="Photos">
             <VisuelVehicule
               teinte={v.teinte}
@@ -120,6 +143,7 @@ export default async function FicheVehicule({ params }: Props) {
             ))}
           </dl>
 
+          {/* Navigation par ancres, collée sous l'en-tête pendant le défilement. */}
           <nav
             aria-label="Sections de la fiche"
             className="sticky top-16 z-30 -mx-4 flex gap-2 overflow-x-auto border-b border-gris-200 bg-white/95 px-4 py-3 backdrop-blur sm:mx-0 sm:px-0"
@@ -203,6 +227,7 @@ export default async function FicheVehicule({ params }: Props) {
           </section>
         </div>
 
+        {/* Colonne de droite : prix, récapitulatif, question au vendeur. Collée à l'écran sur grand écran. Le bouton « Acheter » reste désactivé tant que le parcours de commande n'existe pas. */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="space-y-5 rounded-2xl border border-gris-200 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap gap-2">
@@ -253,6 +278,8 @@ export default async function FicheVehicule({ params }: Props) {
           </div>
         </aside>
       </div>
+
+      {/* Véhicules similaires (même carrosserie ou même marque — critère à valider, docs/08 Q-12). */}
 
       {similaires.length > 0 && (
         <section className="mt-14">

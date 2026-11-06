@@ -114,6 +114,7 @@ const normaliser = (s: string) =>
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
+/** Garde les véhicules publiés qui respectent tous les filtres demandés. */
 export function filtrerVehicules(vehicules: Vehicule[], f: Filtres): Vehicule[] {
   const q = f.q ? normaliser(f.q) : undefined;
   return vehicules.filter((v) => {
@@ -134,6 +135,7 @@ export function filtrerVehicules(vehicules: Vehicule[], f: Filtres): Vehicule[] 
   });
 }
 
+/** Renvoie une copie triée (le tableau d'origine n'est jamais modifié). */
 export function trierVehicules(vehicules: Vehicule[], tri: Tri): Vehicule[] {
   const copie = [...vehicules];
   switch (tri) {
@@ -157,6 +159,7 @@ export type Resultat = {
   pages: number;
 };
 
+/** Chaîne complète : filtrer, trier, puis extraire la page demandée (page ramenée dans les limites). */
 export function rechercher(vehicules: Vehicule[], f: Filtres): Resultat {
   const filtres = trierVehicules(filtrerVehicules(vehicules, f), f.tri);
   const pages = Math.max(1, Math.ceil(filtres.length / f.parPage));
