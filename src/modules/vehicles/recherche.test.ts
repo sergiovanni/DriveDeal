@@ -3,7 +3,9 @@ import { vehiculesPrototype } from "./donnees-prototype";
 import {
   TAILLE_PAGE,
   filtrerVehicules,
+  filtresActifs,
   lireFiltres,
+  urlCatalogue,
   rechercher,
   trierVehicules,
   vehiculesSimilaires,
@@ -63,6 +65,26 @@ describe("rechercher", () => {
   it("ramène la page demandée dans les limites", () => {
     const res = rechercher(vehiculesPrototype, lireFiltres({ page: "99" }));
     expect(res.page).toBe(res.pages);
+  });
+});
+
+describe("pastilles et URL", () => {
+  it("liste les filtres actifs", () => {
+    const f = lireFiltres({ marque: "BMW", prixMax: "30000" });
+    expect(filtresActifs(f).map((a) => a.cle)).toEqual(["marque", "prixMax"]);
+  });
+
+  it("construit une URL sans valeurs vides", () => {
+    expect(urlCatalogue({ marque: "BMW", q: undefined, tri: "" })).toBe(
+      "/vehicules?marque=BMW",
+    );
+    expect(urlCatalogue({})).toBe("/vehicules");
+  });
+
+  it("applique le nombre de résultats par page", () => {
+    const res = rechercher(vehiculesPrototype, lireFiltres({ parPage: "12" }));
+    expect(res.vehicules).toHaveLength(12);
+    expect(lireFiltres({ parPage: "7" }).parPage).toBe(TAILLE_PAGE);
   });
 });
 

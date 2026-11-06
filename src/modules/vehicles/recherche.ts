@@ -1,6 +1,7 @@
 import type { Vehicule } from "./types";
 
 export const TAILLE_PAGE = 6;
+export const TAILLES_PAGE = [6, 12, 24] as const;
 
 export type Tri = "recents" | "prix-asc" | "prix-desc" | "km-asc" | "annee-desc";
 
@@ -27,6 +28,7 @@ export type Filtres = {
   puissanceMin?: number;
   tri: Tri;
   page: number;
+  parPage: number;
 };
 
 type ParamsBruts = Record<string, string | string[] | undefined>;
@@ -49,6 +51,8 @@ export function lireFiltres(params: ParamsBruts): Filtres {
   const triBrut = texte(params.tri);
   const tri = optionsTri.some((o) => o.valeur === triBrut) ? (triBrut as Tri) : "recents";
   const page = Math.max(1, Math.floor(nombre(params.page) ?? 1));
+  const parPageBrut = nombre(params.parPage);
+  const parPage = TAILLES_PAGE.find((t) => t === parPageBrut) ?? TAILLE_PAGE;
 
   return {
     q: texte(params.q),
@@ -64,7 +68,44 @@ export function lireFiltres(params: ParamsBruts): Filtres {
     puissanceMin: nombre(params.puissanceMin),
     tri,
     page,
+    parPage,
   };
+}
+
+/** Pastilles de filtres actifs : le paramètre d'URL à retirer et son libellé. */
+export type FiltreActif = { cle: string; libelle: string };
+
+export function filtresActifs(f: Filtres): FiltreActif[] {
+  const actifs: FiltreActif[] = [];
+  if (f.q) actifs.push({ cle: "q", libelle: `Recherche : ${f.q}` });
+  if (f.marque) actifs.push({ cle: "marque", libelle: `Marque : ${f.marque}` });
+  if (f.carrosserie)
+    actifs.push({ cle: "carrosserie", libelle: `Carrosserie : ${f.carrosserie}` });
+  if (f.carburant)
+    actifs.push({ cle: "carburant", libelle: `Carburant : ${f.carburant}` });
+  if (f.transmission)
+    actifs.push({ cle: "transmission", libelle: `Transmission : ${f.transmission}` });
+  if (f.couleur) actifs.push({ cle: "couleur", libelle: `Couleur : ${f.couleur}` });
+  if (f.prixMin !== undefined)
+    actifs.push({ cle: "prixMin", libelle: `Prix ≥ ${f.prixMin} €` });
+  if (f.prixMax !== undefined)
+    actifs.push({ cle: "prixMax", libelle: `Prix ≤ ${f.prixMax} €` });
+  if (f.anneeMin !== undefined)
+    actifs.push({ cle: "anneeMin", libelle: `Année ≥ ${f.anneeMin}` });
+  if (f.kmMax !== undefined) actifs.push({ cle: "kmMax", libelle: `Km ≤ ${f.kmMax}` });
+  if (f.puissanceMin !== undefined)
+    actifs.push({ cle: "puissanceMin", libelle: `Puissance ≥ ${f.puissanceMin} ch` });
+  return actifs;
+}
+
+/** Construit l'URL du catalogue à partir de paramètres, en ignorant les valeurs vides. */
+export function urlCatalogue(params: Record<string, string | undefined>): string {
+  const q = new URLSearchParams();
+  for (const [cle, valeur] of Object.entries(params)) {
+    if (valeur) q.set(cle, valeur);
+  }
+  const s = q.toString();
+  return s ? `/vehicules?${s}` : "/vehicules";
 }
 
 const normaliser = (s: string) =>
@@ -118,11 +159,11 @@ export type Resultat = {
 
 export function rechercher(vehicules: Vehicule[], f: Filtres): Resultat {
   const filtres = trierVehicules(filtrerVehicules(vehicules, f), f.tri);
-  const pages = Math.max(1, Math.ceil(filtres.length / TAILLE_PAGE));
+  const pages = Math.max(1, Math.ceil(filtres.length / f.parPage));
   const page = Math.min(f.page, pages);
-  const debut = (page - 1) * TAILLE_PAGE;
+  const debut = (page - 1) * f.parPage;
   return {
-    vehicules: filtres.slice(debut, debut + TAILLE_PAGE),
+    vehicules: filtres.slice(debut, debut + f.parPage),
     total: filtres.length,
     page,
     pages,
