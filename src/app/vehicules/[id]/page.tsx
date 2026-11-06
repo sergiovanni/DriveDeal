@@ -52,6 +52,20 @@ export default async function FicheVehicule({ params }: Props) {
     ["Référence", v.reference],
   ];
 
+  const chiffresCles: [string, string][] = [
+    ["Puissance", `${v.puissanceCh} ch`],
+    ["Kilométrage", formaterKilometrage(v.kilometrage)],
+    ["Année", String(v.annee)],
+    ["Boîte", v.boite],
+  ];
+
+  const sections: [string, string][] = [
+    ["caracteristiques", "Caractéristiques"],
+    ["equipements", "Équipements"],
+    ["etat", "État et entretien"],
+    ["documents", "Documents"],
+  ];
+
   const informations: [string, string][] = [
     ["État général", v.etatGeneral],
     ["Historique", v.historique],
@@ -92,12 +106,41 @@ export default async function FicheVehicule({ params }: Props) {
             </div>
           </section>
 
+          <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {chiffresCles.map(([cle, valeur]) => (
+              <div
+                key={cle}
+                className="rounded-xl border border-gris-200 bg-gris-50 px-4 py-3 text-center"
+              >
+                <dd className="text-lg font-extrabold text-marine-900">{valeur}</dd>
+                <dt className="text-[11px] font-semibold uppercase tracking-wide text-gris-500">
+                  {cle}
+                </dt>
+              </div>
+            ))}
+          </dl>
+
+          <nav
+            aria-label="Sections de la fiche"
+            className="sticky top-16 z-30 -mx-4 flex gap-2 overflow-x-auto border-b border-gris-200 bg-white/95 px-4 py-3 backdrop-blur sm:mx-0 sm:px-0"
+          >
+            {sections.map(([ancre, libelle]) => (
+              <a
+                key={ancre}
+                href={`#${ancre}`}
+                className="whitespace-nowrap rounded-full border border-gris-300 px-3 py-1.5 text-xs font-semibold text-gris-700 hover:border-bleu-600 hover:text-bleu-600"
+              >
+                {libelle}
+              </a>
+            ))}
+          </nav>
+
           <section>
             <h2 className="mb-3 text-xl font-bold text-gris-900">Description</h2>
             <p className="leading-7 text-gris-700">{v.description}</p>
           </section>
 
-          <section>
+          <section id="caracteristiques" className="scroll-mt-32">
             <h2 className="mb-3 text-xl font-bold text-gris-900">Caractéristiques</h2>
             <dl className="grid overflow-hidden rounded-xl border border-gris-200 sm:grid-cols-2">
               {caracteristiques.map(([cle, valeur]) => (
@@ -112,7 +155,7 @@ export default async function FicheVehicule({ params }: Props) {
             </dl>
           </section>
 
-          <section>
+          <section id="equipements" className="scroll-mt-32">
             <h2 className="mb-3 text-xl font-bold text-gris-900">Équipements</h2>
             <ul className="grid gap-2 sm:grid-cols-2">
               {v.equipements.map((e) => (
@@ -127,7 +170,7 @@ export default async function FicheVehicule({ params }: Props) {
             </ul>
           </section>
 
-          <section>
+          <section id="etat" className="scroll-mt-32">
             <h2 className="mb-3 text-xl font-bold text-gris-900">
               État, historique et entretien
             </h2>
@@ -139,6 +182,24 @@ export default async function FicheVehicule({ params }: Props) {
                 </div>
               ))}
             </dl>
+          </section>
+
+          <section id="documents" className="scroll-mt-32">
+            <h2 className="mb-3 text-xl font-bold text-gris-900">Documents associés</h2>
+            <ul className="divide-y divide-gris-200 overflow-hidden rounded-xl border border-gris-200">
+              {v.documents.map((d) => (
+                <li
+                  key={d}
+                  className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
+                >
+                  <span className="font-semibold text-gris-900">{d}</span>
+                  <Badge>Démonstration</Badge>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-xs text-gris-500">
+              Les documents réels du véhicule seront ajoutés depuis le back-office.
+            </p>
           </section>
         </div>
 
@@ -157,8 +218,24 @@ export default async function FicheVehicule({ params }: Props) {
             <p className="text-4xl font-extrabold text-marine-900">
               {formaterPrix(v.prixCentimes)}
             </p>
+            <dl className="space-y-2 rounded-lg bg-gris-50 p-4 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-gris-500">Prix du véhicule</dt>
+                <dd className="font-semibold text-gris-900">
+                  {formaterPrix(v.prixCentimes)}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-gris-500">Frais complémentaires</dt>
+                <dd className="font-semibold text-gris-500">À définir</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-gris-500">TVA</dt>
+                <dd className="font-semibold text-gris-500">À définir</dd>
+              </div>
+            </dl>
             <p className="text-xs text-gris-500">
-              Frais complémentaires et TVA : à définir (en attente de validation métier).
+              Frais et TVA seront précisés une fois les règles de l’entreprise validées.
             </p>
             <Bouton disabled taille="lg" className="w-full">
               Acheter

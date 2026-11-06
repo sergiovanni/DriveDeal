@@ -36,4 +36,6 @@ export type Vehicule = {
   historique: string;
   entretien: string;
   controleTechnique: string;
+  /** Libellés des documents associés (les fichiers réels viendront de Supabase Storage). */
+  documents: string[];
 };

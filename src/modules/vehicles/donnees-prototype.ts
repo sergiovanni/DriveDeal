@@ -9,6 +9,11 @@ const commun = {
   statut: "publie" as const,
   historique: "Données de démonstration — historique à renseigner.",
   controleTechnique: "Données de démonstration — contrôle technique à renseigner.",
+  documents: [
+    "Rapport d’état du véhicule",
+    "Historique d’entretien",
+    "Contrôle technique",
+  ],
 };
 
 export const vehiculesPrototype: Vehicule[] = [

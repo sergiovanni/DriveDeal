@@ -3,7 +3,7 @@ import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { CarteVehicule } from "@/components/vehicules/CarteVehicule";
 import { VisuelVehicule } from "@/components/vehicules/VisuelVehicule";
-import { formaterPrix } from "@/lib/money";
+import { formaterKilometrage, formaterPrix } from "@/lib/money";
 import {
   lireFiltres,
   listerVehicules,
@@ -33,6 +33,29 @@ const atouts = [
   },
 ];
 
+const etapes = [
+  {
+    titre: "Choisissez votre véhicule",
+    texte:
+      "Recherchez avec les filtres et consultez la fiche complète : caractéristiques, état, entretien.",
+  },
+  {
+    titre: "Créez votre compte et commandez",
+    texte:
+      "Vérifiez vos informations, relisez le récapitulatif et acceptez les conditions de vente.",
+  },
+  {
+    titre: "Payez en ligne",
+    texte:
+      "Le paiement est confirmé par le prestataire avant que la commande soit considérée comme payée.",
+  },
+  {
+    titre: "Suivez et récupérez vos documents",
+    texte:
+      "Suivi de commande, facture et documents du véhicule disponibles dans votre espace.",
+  },
+];
+
 const champ =
   "h-11 w-full rounded-lg border border-white/15 bg-white/95 px-3 text-sm text-gris-900";
 
@@ -42,6 +65,13 @@ export default function Accueil() {
   const vedette = aLaUne[0];
   const marques = valeursDistinctes(tous, "marque");
   const carrosseries = valeursDistinctes(tous, "carrosserie");
+  const prixMini = Math.min(...tous.map((v) => v.prixCentimes));
+  const chiffres: [string, string][] = [
+    [String(tous.length), "véhicules disponibles"],
+    [String(marques.length), "marques"],
+    [String(carrosseries.length), "types de carrosserie"],
+    [formaterPrix(prixMini), "prix de départ"],
+  ];
 
   return (
     <>
@@ -85,6 +115,17 @@ export default function Accueil() {
                     {vedette.marque} {vedette.modele}
                   </p>
                   <p className="text-sm text-white/70">{vedette.version}</p>
+                  <p className="mt-2 flex flex-wrap gap-2 text-[11px] font-semibold">
+                    {[
+                      `${vedette.puissanceCh} ch`,
+                      vedette.motorisation,
+                      formaterKilometrage(vedette.kilometrage),
+                    ].map((c) => (
+                      <span key={c} className="rounded-md bg-white/10 px-2 py-1">
+                        {c}
+                      </span>
+                    ))}
+                  </p>
                 </div>
                 <p className="text-xl font-extrabold">
                   {formaterPrix(vedette.prixCentimes)}
@@ -184,6 +225,24 @@ export default function Accueil() {
         </Conteneur>
       </section>
 
+      <section
+        aria-label="Le catalogue en chiffres"
+        className="bg-marine-950 py-8 text-white"
+      >
+        <Conteneur>
+          <dl className="grid grid-cols-2 gap-6 text-center sm:grid-cols-4">
+            {chiffres.map(([valeur, libelle]) => (
+              <div key={libelle}>
+                <dd className="text-3xl font-extrabold text-white">{valeur}</dd>
+                <dt className="mt-1 text-xs font-semibold uppercase tracking-wide text-ciel-300">
+                  {libelle}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </Conteneur>
+      </section>
+
       <section className="bg-gris-50 py-16">
         <Conteneur>
           <div className="mb-8 flex items-end justify-between gap-4">
@@ -228,6 +287,39 @@ export default function Accueil() {
               </div>
             ))}
           </div>
+        </Conteneur>
+      </section>
+
+      <section className="bg-gris-50 py-16">
+        <Conteneur className="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-widest text-bleu-600">
+              Comment ça marche
+            </p>
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-marine-900 sm:text-3xl">
+              Plus qu’un catalogue : un achat simple, de A à Z.
+            </h2>
+            <p className="mt-3 leading-7 text-gris-500">
+              De la découverte du véhicule à la remise de votre facture, chaque étape se
+              fait en ligne.
+            </p>
+          </div>
+          <ol className="space-y-4">
+            {etapes.map((e, i) => (
+              <li
+                key={e.titre}
+                className="flex gap-4 rounded-xl border border-gris-200 bg-white p-4"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-bleu-600 text-sm font-bold text-white">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="font-bold text-gris-900">{e.titre}</h3>
+                  <p className="mt-1 text-sm leading-6 text-gris-500">{e.texte}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </Conteneur>
       </section>
 
