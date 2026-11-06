@@ -37,6 +37,16 @@ export function SiteFooter() {
               Nos véhicules
             </Link>
           </li>
+          <li>
+            <Link href="/a-propos" className="hover:text-white">
+              À propos
+            </Link>
+          </li>
+          <li>
+            <Link href="/contact" className="hover:text-white">
+              Contact
+            </Link>
+          </li>
         </Colonne>
 
         <Colonne titre="Catalogue par carrosserie">

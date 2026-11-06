@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { Logo } from "@/components/ui/Logo";
+import { BarreProgression } from "@/components/animation/BarreProgression";
 import { NavLiens } from "./NavLiens";
 
 export function SiteHeader() {
@@ -13,11 +14,12 @@ export function SiteHeader() {
         </Link>
         <div className="flex items-center gap-4">
           <NavLiens />
-          <BoutonLien href="/vehicules" className="hidden sm:inline-flex">
-            Voir le catalogue
-          </BoutonLien>
+          <div className="hidden lg:block">
+            <BoutonLien href="/vehicules">Voir le catalogue</BoutonLien>
+          </div>
         </div>
       </Conteneur>
+      <BarreProgression />
     </header>
   );
 }

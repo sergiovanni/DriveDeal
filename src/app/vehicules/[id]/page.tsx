@@ -240,6 +240,12 @@ export default async function FicheVehicule({ params }: Props) {
             <Bouton disabled taille="lg" className="w-full">
               Acheter
             </Bouton>
+            <Link
+              href={`/contact?sujet=vehicule&vehicule=${v.reference}`}
+              className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-gris-300 text-sm font-semibold text-gris-900 hover:bg-gris-50"
+            >
+              Poser une question sur ce véhicule
+            </Link>
             <p className="text-xs text-gris-500">
               L’achat en ligne sera disponible une fois le parcours de commande et de
               paiement réalisé.
