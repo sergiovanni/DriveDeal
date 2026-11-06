@@ -67,8 +67,12 @@ const champ =
  * avantages, parcours d'achat en 4 étapes, appel à l'action.
  * Les chiffres sont calculés à partir du catalogue : rien n'est écrit en dur.
  */
-export default function Accueil() {
-  const tous = listerVehicules();
+// La page est régénérée au plus toutes les 60 s : un nouveau véhicule publié apparaît
+// donc rapidement sans reconstruire le site.
+export const revalidate = 60;
+
+export default async function Accueil() {
+  const tous = await listerVehicules();
   // Les 3 véhicules les plus récemment publiés (tri par défaut du catalogue).
   const aLaUne = rechercher(tous, lireFiltres({})).vehicules.slice(0, 3);
   const vedette = aLaUne[0];

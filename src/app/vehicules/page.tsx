@@ -55,7 +55,7 @@ export default async function PageCatalogue({ searchParams }: Props) {
   const brut = await searchParams;
   // Les paramètres d'adresse peuvent contenir n'importe quoi : lireFiltres ne garde que des valeurs valides.
   const filtres = lireFiltres(brut);
-  const tous = listerVehicules();
+  const tous = await listerVehicules();
   const resultat = rechercher(tous, filtres);
 
   const couleurs = valeursDistinctes(tous, "couleur");
@@ -109,7 +109,7 @@ export default async function PageCatalogue({ searchParams }: Props) {
         </aside>
 
         {/* Colonne de droite : pastilles de filtres, tri, résultats et pagination. */}
-        <section aria-labelledby="titre-resultats">
+        <section aria-labelledby="titre-resultats" className="min-w-0">
           <p className="mb-4 rounded-lg bg-amber-50 px-4 py-2 text-xs text-alerte">
             Prototype : les véhicules affichés sont des données de démonstration.
           </p>

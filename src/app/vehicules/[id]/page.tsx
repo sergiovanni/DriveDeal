@@ -21,16 +21,25 @@ type Props = { params: Promise<{ id: string }> };
  * - `generateMetadata` fournit le titre et la description de chaque fiche.
  * - Un identifiant inconnu ou non publié renvoie la page 404 (`notFound()`).
  */
+// La fiche est régénérée au plus toutes les 60 s (nouveau prix, véhicule vendu, etc.).
+export const revalidate = 60;
+
 // Pré-génère une page par véhicule publié au moment du build.
-export function generateStaticParams() {
-  return listerVehicules().map((v) => ({ id: v.id }));
+// Si la base est injoignable pendant la construction, on ne bloque pas le déploiement :
+// les fiches seront alors générées à la première visite.
+export async function generateStaticParams() {
+  try {
+    return (await listerVehicules()).map((v) => ({ id: v.id }));
+  } catch {
+    return [];
+  }
 }
 
 // Titre et description propres à chaque fiche (ex. « BMW Série 3 320d … | DriveDeal »).
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Next.js 16 : params est une promesse, il faut l'attendre.
   const { id } = await params;
-  const v = trouverVehicule(id);
+  const v = await trouverVehicule(id);
   if (!v) return { title: "Véhicule introuvable" };
   return {
     title: `${v.marque} ${v.modele} ${v.version}`,
@@ -40,11 +49,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FicheVehicule({ params }: Props) {
   const { id } = await params;
-  const v = trouverVehicule(id);
+  const v = await trouverVehicule(id);
   if (!v) notFound();
 
   const titre = `${v.marque} ${v.modele}`;
-  const similaires = vehiculesSimilaires(listerVehicules(), v);
+  const similaires = vehiculesSimilaires(await listerVehicules(), v);
 
   const caracteristiques: [string, string][] = [
     ["Année", String(v.annee)],
@@ -99,7 +108,8 @@ export default async function FicheVehicule({ params }: Props) {
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-        <div className="space-y-8">
+        {/* min-w-0 : sans lui, la colonne d'une grille refuse de rétrécir sous la largeur de son contenu et déborde de l'écran sur mobile. */}
+        <div className="min-w-0 space-y-8">
           {/* Galerie : visuel de démonstration en attendant les vraies photos (Supabase Storage). */}
           <section aria-label="Photos">
             <VisuelVehicule
