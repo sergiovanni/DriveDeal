@@ -4,6 +4,13 @@ import { FormulaireContact } from "@/components/contact/FormulaireContact";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { SUJETS } from "@/modules/contact/validation";
 
+/**
+ * Page de contact.
+ * Le sujet et la référence du véhicule peuvent être préremplis par l'adresse
+ * (/contact?sujet=vehicule&vehicule=DD-0004), utilisé depuis chaque fiche véhicule.
+ * Le formulaire n'est actif que si la base de données est configurée (DATABASE_URL).
+ */
+// Métadonnées de la page (titre et description pour les moteurs de recherche).
 export const metadata: Metadata = {
   title: "Contact",
   description:
@@ -37,6 +44,7 @@ export default async function PageContact({ searchParams }: Props) {
   const sujetBrut = premier(params.sujet);
   const sujet = SUJETS.some((s) => s.valeur === sujetBrut) ? sujetBrut : undefined;
   const vehicule = premier(params.vehicule)?.slice(0, 30);
+  // Sans base de données, le formulaire s'affiche mais son bouton reste désactivé (explication à l'écran).
   const actif = Boolean(process.env.DATABASE_URL);
 
   return (

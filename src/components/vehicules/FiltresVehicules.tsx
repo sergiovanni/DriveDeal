@@ -16,7 +16,9 @@ const champ =
 const etiquette = "mb-1 block text-xs font-semibold text-gris-700";
 const titreGroupe = "mb-2 text-xs font-bold uppercase tracking-wide text-gris-700";
 
+// Paliers proposés pour le kilométrage maximum.
 const KM_MAX = [10000, 30000, 60000, 100000];
+// Années proposées pour « année à partir de ».
 const ANNEES_MIN = [2022, 2021, 2020, 2019];
 
 /** Pastille cliquable (radio caché) : fonctionne sans JavaScript. */

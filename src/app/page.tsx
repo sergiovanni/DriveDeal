@@ -61,12 +61,20 @@ const etapes = [
 const champ =
   "h-11 w-full rounded-lg border border-white/15 bg-white/95 px-3 text-sm text-gris-900";
 
+/**
+ * Page d'accueil.
+ * Enchaîne : héros animé + recherche rapide, bandeau de chiffres réels, véhicules à la une,
+ * avantages, parcours d'achat en 4 étapes, appel à l'action.
+ * Les chiffres sont calculés à partir du catalogue : rien n'est écrit en dur.
+ */
 export default function Accueil() {
   const tous = listerVehicules();
+  // Les 3 véhicules les plus récemment publiés (tri par défaut du catalogue).
   const aLaUne = rechercher(tous, lireFiltres({})).vehicules.slice(0, 3);
   const vedette = aLaUne[0];
   const marques = valeursDistinctes(tous, "marque");
   const carrosseries = valeursDistinctes(tous, "carrosserie");
+  // Prix de départ affiché dans le bandeau de chiffres (valeur en centimes).
   const prixMini = Math.min(...tous.map((v) => v.prixCentimes));
   const chiffres: { valeur: number; format: "entier" | "euro"; libelle: string }[] = [
     { valeur: tous.length, format: "entier", libelle: "véhicules disponibles" },
@@ -77,6 +85,7 @@ export default function Accueil() {
 
   return (
     <>
+      {/* Héros : accroche, véhicule vedette et recherche rapide. La classe « entree » joue l'animation d'arrivée au chargement (délai réglé par --delai). */}
       <section className="bg-linear-to-b from-marine-950 via-marine-900 to-marine-800 text-white">
         <Conteneur className="grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="space-y-6">
@@ -149,6 +158,7 @@ export default function Accueil() {
         </Conteneur>
 
         <Conteneur className="pb-12">
+          {/* Recherche rapide : formulaire GET vers le catalogue, les critères passent dans l'adresse. */}
           <form
             method="get"
             action="/vehicules"
@@ -238,6 +248,7 @@ export default function Accueil() {
         </Conteneur>
       </section>
 
+      {/* Bandeau de chiffres : CompteurAnime fait « monter » chaque nombre quand il devient visible. */}
       <section
         aria-label="Le catalogue en chiffres"
         className="bg-marine-950 py-8 text-white"
@@ -258,6 +269,7 @@ export default function Accueil() {
         </Conteneur>
       </section>
 
+      {/* Véhicules à la une : Apparition décale l'entrée de chaque carte (effet de cascade). */}
       <section className="bg-gris-50 py-16">
         <Conteneur>
           <Apparition className="mb-8 flex items-end justify-between gap-4">
@@ -287,6 +299,7 @@ export default function Accueil() {
         </Conteneur>
       </section>
 
+      {/* Avantages du service (texte limité à ce qui est prévu au cahier des charges). */}
       <section className="py-16">
         <Conteneur>
           <Apparition>
@@ -308,6 +321,7 @@ export default function Accueil() {
         </Conteneur>
       </section>
 
+      {/* Parcours d'achat en 4 étapes. */}
       <section className="bg-gris-50 py-16">
         <Conteneur className="grid items-center gap-10 lg:grid-cols-2">
           <Apparition variante="gauche">
@@ -342,6 +356,7 @@ export default function Accueil() {
         </Conteneur>
       </section>
 
+      {/* Appel à l'action final vers le catalogue. */}
       <section className="bg-marine-900 py-14 text-white">
         <Conteneur className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <Apparition variante="gauche">

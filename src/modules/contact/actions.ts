@@ -5,6 +5,7 @@ import { messagesContact } from "@/lib/db/schema";
 import type { EtatContact } from "./etat";
 import { validerMessage } from "./validation";
 
+// Recopie les champs saisis pour pouvoir les renvoyer au formulaire en cas d'erreur.
 function valeursSaisies(formData: FormData): Record<string, string> {
   const valeurs: Record<string, string> = {};
   for (const cle of ["nom", "email", "telephone", "sujet", "vehicule", "message"]) {

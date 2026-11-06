@@ -5,6 +5,7 @@ import * as schema from "./schema";
 
 let instance: ReturnType<typeof creer> | undefined;
 
+// Ouvre la connexion Postgres puis la relie à Drizzle avec le schéma typé.
 function creer() {
   const { DATABASE_URL } = lireEnvServeur();
   // `prepare: false` : requis avec le pooler Supabase en mode transaction (Vercel).
@@ -12,7 +13,10 @@ function creer() {
   return drizzle(client, { schema });
 }
 
-/** Accès à la base, créé à la première utilisation. Serveur uniquement. */
+/**
+ * Accès à la base, créé à la première utilisation puis réutilisé (une connexion par
+ * instance serverless). Réservé au serveur : ne jamais l'importer dans un composant client.
+ */
 export function db() {
   instance ??= creer();
   return instance;

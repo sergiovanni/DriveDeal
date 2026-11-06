@@ -15,6 +15,14 @@ import {
   valeursDistinctes,
 } from "@/modules/vehicles";
 
+/**
+ * Catalogue des véhicules.
+ * Les filtres, le tri et la pagination vivent dans l'adresse (?marque=…&tri=…&page=…) :
+ * la page est donc partageable, fonctionne sans JavaScript et se met en cache proprement.
+ * Étapes : lire les paramètres (non fiables) -> les convertir en filtres valides ->
+ * rechercher -> afficher.
+ */
+// Métadonnées de la page (titre et description pour les moteurs de recherche).
 export const metadata: Metadata = {
   title: "Nos véhicules d’occasion",
   description:
@@ -43,12 +51,15 @@ const garanties = [
 ];
 
 export default async function PageCatalogue({ searchParams }: Props) {
+  // Next.js 16 : searchParams est une promesse, il faut l'attendre.
   const brut = await searchParams;
+  // Les paramètres d'adresse peuvent contenir n'importe quoi : lireFiltres ne garde que des valeurs valides.
   const filtres = lireFiltres(brut);
   const tous = listerVehicules();
   const resultat = rechercher(tous, filtres);
 
   const couleurs = valeursDistinctes(tous, "couleur");
+  // Couleur d'illustration de chaque couleur de carrosserie (pastilles du filtre).
   const couleursHex: Record<string, string> = {};
   for (const v of tous) couleursHex[v.couleur] ??= v.teinte;
 
@@ -61,16 +72,19 @@ export default async function PageCatalogue({ searchParams }: Props) {
     couleursHex,
   };
 
+  // Paramètres bruts conservés tels quels pour reconstruire les liens (pagination, pastilles).
   const params: Record<string, string | undefined> = {};
   for (const [cle, valeur] of Object.entries(brut)) {
     params[cle] = Array.isArray(valeur) ? valeur[0] : valeur;
   }
 
+  // Numéros du premier et du dernier résultat de la page, pour « 1–6 sur 12 véhicules ».
   const debut = (resultat.page - 1) * filtres.parPage + 1;
   const fin = debut + resultat.vehicules.length - 1;
 
   return (
     <>
+      {/* Bandeau de titre avec fil d'Ariane et compteur de véhicules. */}
       <section className="bg-linear-to-b from-marine-950 to-marine-900 py-10 text-white">
         <Conteneur>
           <nav aria-label="Fil d’Ariane" className="mb-4 text-sm text-white/60">
@@ -89,10 +103,12 @@ export default async function PageCatalogue({ searchParams }: Props) {
       </section>
 
       <Conteneur className="grid gap-8 py-10 lg:grid-cols-[300px_1fr]">
+        {/* Colonne de gauche : formulaire de filtres (GET, sans JavaScript). */}
         <aside>
           <FiltresVehicules filtres={filtres} options={options} />
         </aside>
 
+        {/* Colonne de droite : pastilles de filtres, tri, résultats et pagination. */}
         <section aria-labelledby="titre-resultats">
           <p className="mb-4 rounded-lg bg-amber-50 px-4 py-2 text-xs text-alerte">
             Prototype : les véhicules affichés sont des données de démonstration.
@@ -143,6 +159,7 @@ export default async function PageCatalogue({ searchParams }: Props) {
         </section>
       </Conteneur>
 
+      {/* Bandeau de réassurance. */}
       <section className="border-t border-gris-200 bg-gris-50 py-10">
         <Conteneur className="grid gap-6 sm:grid-cols-3">
           {garanties.map((g, i) => (

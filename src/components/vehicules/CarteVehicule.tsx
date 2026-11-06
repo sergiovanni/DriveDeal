@@ -14,6 +14,12 @@ function Donnee({ libelle, valeur }: { libelle: string; valeur: string }) {
   );
 }
 
+/**
+ * Carte d'un véhicule (accueil, catalogue, véhicules similaires).
+ * Toute la carte est un lien vers la fiche. Les effets au survol reposent sur la classe
+ * `group` de Tailwind et sur les styles « .brillance », « .voiture » et « .roue »
+ * définis dans globals.css.
+ */
 export function CarteVehicule({ vehicule: v }: { vehicule: Vehicule }) {
   const titre = `${v.marque} ${v.modele}`;
   return (
