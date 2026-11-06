@@ -9,7 +9,7 @@ function Donnee({ libelle, valeur }: { libelle: string; valeur: string }) {
       <dt className="text-[10px] font-semibold uppercase tracking-wide text-gris-500">
         {libelle}
       </dt>
-      <dd className="truncate text-sm font-bold text-gris-900">{valeur}</dd>
+      <dd className="text-[13px] font-bold text-gris-900">{valeur}</dd>
     </div>
   );
 }
@@ -17,15 +17,19 @@ function Donnee({ libelle, valeur }: { libelle: string; valeur: string }) {
 export function CarteVehicule({ vehicule: v }: { vehicule: Vehicule }) {
   const titre = `${v.marque} ${v.modele}`;
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-gris-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-gris-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-bleu-500/50 hover:shadow-xl hover:shadow-marine-900/10">
       <Link
         href={`/vehicules/${v.id}`}
         className="flex flex-1 flex-col"
         aria-label={`Voir la fiche : ${titre} ${v.version}`}
       >
-        <div className="relative">
-          <VisuelVehicule teinte={v.teinte} libelle={titre} className="h-44" />
-          <span className="absolute left-3 top-3 rounded-md bg-white/95 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-marine-900">
+        <div className="brillance relative overflow-hidden">
+          <VisuelVehicule
+            teinte={v.teinte}
+            libelle={titre}
+            className="h-44 transition-transform duration-500 ease-out group-hover:scale-105"
+          />
+          <span className="absolute left-3 top-3 z-10 rounded-md bg-white/95 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-marine-900">
             {v.carrosserie}
           </span>
         </div>
@@ -41,14 +45,14 @@ export function CarteVehicule({ vehicule: v }: { vehicule: Vehicule }) {
             <p className="line-clamp-1 text-sm text-gris-500">{v.version}</p>
           </div>
 
-          <dl className="grid grid-cols-4 gap-2 rounded-lg bg-gris-50 p-3">
+          <dl className="grid grid-cols-[1fr_1.15fr_1fr_1.35fr] gap-1.5 rounded-lg bg-gris-50 p-2.5">
             <Donnee
               libelle="Km"
               valeur={new Intl.NumberFormat("fr-FR").format(v.kilometrage)}
             />
             <Donnee
               libelle="Boîte"
-              valeur={v.boite === "Automatique" ? "Auto" : "Manuelle"}
+              valeur={v.boite === "Automatique" ? "Auto" : "Manuel"}
             />
             <Donnee libelle="Puiss." valeur={`${v.puissanceCh} ch`} />
             <Donnee libelle="Énergie" valeur={v.carburant} />
@@ -61,8 +65,14 @@ export function CarteVehicule({ vehicule: v }: { vehicule: Vehicule }) {
                 {formaterPrix(v.prixCentimes)}
               </p>
             </div>
-            <span className="inline-flex h-10 items-center rounded-lg bg-bleu-600 px-4 text-sm font-semibold text-white group-hover:bg-bleu-500">
+            <span className="inline-flex h-10 items-center gap-2 rounded-lg bg-bleu-600 px-4 text-sm font-semibold text-white transition-colors group-hover:bg-bleu-500">
               Voir la fiche
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                →
+              </span>
             </span>
           </div>
         </div>

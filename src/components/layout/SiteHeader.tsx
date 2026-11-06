@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BoutonLien } from "@/components/ui/Button";
 import { Conteneur } from "@/components/ui/Conteneur";
 import { Logo } from "@/components/ui/Logo";
+import { BarreProgression } from "@/components/animation/BarreProgression";
 import { NavLiens } from "./NavLiens";
 
 export function SiteHeader() {
@@ -18,6 +19,7 @@ export function SiteHeader() {
           </div>
         </div>
       </Conteneur>
+      <BarreProgression />
     </header>
   );
 }
