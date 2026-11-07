@@ -8,6 +8,7 @@
  *
  * Pour modifier le schéma : voir docs/09-guide-mise-en-route.md, « Modifier le schéma plus tard ».
  */
+export * from "./audit";
 export * from "./catalogue";
 export * from "./comptes";
 export * from "./constantes";
