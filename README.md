@@ -52,6 +52,7 @@ Pour brancher la vraie base (Supabase), suivre le
 | `npm test` | Lance les tests (Vitest) |
 | `npm run format` | Reformate le code (Prettier) |
 | `npm run env:verifier` | Vérifie `.env.local` (format puis connexions réelles), sans afficher de secret |
+| `npm run db:verifier-securite` | Attaques simulées sur la base de développement (avec `CONFIRMER_TEST_SECURITE=oui`) |
 | `npm run db:generate` | Génère une migration SQL à partir du schéma |
 | `npm run db:migrate` | Applique les migrations à la base |
 | `npm run db:seed-demo` | Remplit la base de **développement** avec les véhicules de démonstration (voir docs/09) |
