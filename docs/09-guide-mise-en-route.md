@@ -119,6 +119,17 @@ lancer sur la base de production** : ces véhicules sont fictifs (le script refu
 `NODE_ENV=production`). Pour les retirer, supprimer les véhicules de référence `DD-0001` à
 `DD-0012` depuis le Table Editor de Supabase.
 
+### Vérifier la sécurité de la base (recommandé après chaque migration)
+
+```bash
+CONFIRMER_TEST_SECURITE=oui npm run db:verifier-securite
+```
+
+Le script contrôle que toutes les tables ont la RLS, puis joue des attaques réelles depuis
+l'extérieur avec la clé **publique** (lire des données privées, créer un faux rôle, un faux
+véhicule, un faux message, modifier un rôle) et vérifie dans la base qu'aucune n'a réussi. Si une
+attaque réussissait, il supprime ce qu'il a créé et échoue. Il refuse de tourner en production.
+
 ## Partie C — Tester en local
 
 ```bash

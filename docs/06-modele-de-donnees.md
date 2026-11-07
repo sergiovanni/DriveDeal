@@ -138,6 +138,9 @@ Le schéma est écrit en TypeScript dans `src/lib/db/schema/` et traduit en SQL 
 - **Photos et documents** : la base ne garde que la clé du fichier ; le fichier vit dans
   Supabase Storage.
 
-> ⚠️ Les migrations `0002` et `0003` sont écrites à la main pour Supabase. Elles n'ont pas pu
-> être exécutées sur une vraie base lors de leur rédaction : à vérifier lors de la première
-> application (`npm run db:migrate`) sur le projet de développement.
+> ✅ **Vérifié le 2026-11-07** sur le projet Supabase de développement (région `eu-central-1`,
+> Francfort) : les 4 migrations s'appliquent sans erreur ; les 14 tables ont la RLS ; les
+> déclencheurs `apres_inscription`, `vehicles_updated_at` et `profiles_updated_at` existent ; les
+> rôles `client` et `administrateur` sont créés ; les espaces de stockage `vehicules-photos`
+> (public, 5 Mo) et `documents-prives` (privé, 10 Mo) existent. Test de sécurité réel :
+> `CONFIRMER_TEST_SECURITE=oui npm run db:verifier-securite`.

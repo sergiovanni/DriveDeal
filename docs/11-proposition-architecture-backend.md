@@ -28,7 +28,7 @@ Principes retenus :
 |---|---|---|
 | Framework | Next.js **16.2.1**, React **19.2.4**, TypeScript strict | Dépôt sain : types, lint, 49 tests, build passent |
 | Supabase | `@supabase/ssr` 0.12.7, `@supabase/supabase-js` 2.119 | Clients serveur et navigateur écrits, **jamais utilisés** |
-| Base | Drizzle + 4 migrations (`0000` contact ; `0001` catalogue, comptes, favoris ; `0002` automatismes et rôles ; `0003` stockage) | **Jamais exécutées sur une vraie base** |
+| Base | Drizzle + 4 migrations (`0000` contact ; `0001` catalogue, comptes, favoris ; `0002` automatismes et rôles ; `0003` stockage) | ✅ **Appliquées avec succès** sur le projet de développement le 2026-11-07 |
 | RLS | Activée sur toutes les tables, vérifiée par un test automatique | Lecture publique limitée aux véhicules publiés |
 | Auth | **Absente** | Aucune page, aucun `proxy.ts` |
 | Storage | Deux espaces définis en SQL (photos publiques, documents privés) | Aucun flux d'envoi |
@@ -238,6 +238,13 @@ Prérequis avant création : durée de réservation (I-06), statuts exacts de co
 conditions d'annulation (I-08). Un **test de concurrence sur une vraie base** sera indispensable.
 
 ## 8. Politiques RLS (état et durcissement)
+
+**Constat réel (2026-11-07, projet de développement) :** le rôle public `anon` possède **tous les
+droits SQL** (lecture, insertion, modification, suppression) sur les 14 tables : c'est le réglage
+par défaut de Supabase. Seule la RLS l'en empêche. Test réel depuis l'extérieur avec la clé
+publique : lectures privées → listes vides ; insertions (faux rôle, faux véhicule, faux message) →
+refusées (`42501`) ; modification d'un rôle → 0 ligne touchée ; aucune trace dans la base. La
+sécurité tient, mais elle repose sur **une seule barrière** : d'où le durcissement ci-dessous.
 
 **Déjà en place :** RLS sur toutes les tables ; lecture publique limitée au catalogue publié ;
 propriétaire seulement pour profil et favoris ; aucune politique d'écriture publique ; test
