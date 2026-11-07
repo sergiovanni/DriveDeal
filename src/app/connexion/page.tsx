@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { CarteAuth } from "@/components/auth/CarteAuth";
 import { FormulaireConnexion } from "@/components/auth/FormulaireConnexion";
+import { PanneauAuth } from "@/components/auth/PanneauAuth";
 import { adresseRedirectionSure } from "@/lib/auth/redirection";
 import { supabaseConfigure } from "@/lib/env";
 
@@ -23,20 +22,10 @@ export default async function PageConnexion({ searchParams }: Props) {
   const lienInvalide = params.erreur === "lien-invalide";
 
   return (
-    <CarteAuth
-      titre="Connexion"
-      sousTitre="Accédez à votre espace client : favoris, commandes et factures."
-      pied={
-        <>
-          Pas encore de compte ?{" "}
-          <Link
-            href="/inscription"
-            className="font-semibold text-bleu-600 hover:underline"
-          >
-            Créer un compte
-          </Link>
-        </>
-      }
+    <PanneauAuth
+      onglet="connexion"
+      titre="Bon retour sur DriveDeal"
+      sousTitre="Saisissez votre adresse e-mail et votre mot de passe pour accéder à votre espace."
     >
       {lienInvalide && (
         <p
@@ -51,6 +40,6 @@ export default async function PageConnexion({ searchParams }: Props) {
         actif={supabaseConfigure()}
         redirection={redirection || undefined}
       />
-    </CarteAuth>
+    </PanneauAuth>
   );
 }

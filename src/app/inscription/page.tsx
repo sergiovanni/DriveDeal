@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { CarteAuth } from "@/components/auth/CarteAuth";
 import { FormulaireInscription } from "@/components/auth/FormulaireInscription";
+import { PanneauAuth } from "@/components/auth/PanneauAuth";
 import { supabaseConfigure } from "@/lib/env";
 
 export const metadata: Metadata = {
@@ -11,19 +10,12 @@ export const metadata: Metadata = {
 
 export default function PageInscription() {
   return (
-    <CarteAuth
-      titre="Créer un compte"
-      sousTitre="Gratuit. Vous recevrez un e-mail pour confirmer votre adresse."
-      pied={
-        <>
-          Déjà un compte ?{" "}
-          <Link href="/connexion" className="font-semibold text-bleu-600 hover:underline">
-            Se connecter
-          </Link>
-        </>
-      }
+    <PanneauAuth
+      onglet="inscription"
+      titre="Créer votre compte"
+      sousTitre="Gratuit et rapide. Vous recevrez un e-mail pour confirmer votre adresse."
     >
       <FormulaireInscription actif={supabaseConfigure()} />
-    </CarteAuth>
+    </PanneauAuth>
   );
 }

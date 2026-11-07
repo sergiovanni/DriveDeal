@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { Bouton } from "@/components/ui/Button";
 import { ChampFormulaire } from "@/components/ui/ChampFormulaire";
+import { ChampMotDePasse } from "@/components/ui/ChampMotDePasse";
 import { connecter } from "@/modules/comptes/actions";
 import { etatCompteInitial } from "@/modules/comptes/etat";
 import { AlerteFormulaire, AvisIndisponible } from "./ElementsFormulaire";
@@ -36,24 +37,22 @@ export function FormulaireConnexion({
         valeurParDefaut={etat.valeurs?.email}
         erreur={etat.erreurs?.email}
       />
-      <ChampFormulaire
+      <ChampMotDePasse
         id="motDePasse"
         nom="motDePasse"
-        type="password"
         libelle="Mot de passe"
         autoComplete="current-password"
         requis
         erreur={etat.erreurs?.motDePasse}
+        droite={
+          <Link
+            href="/mot-de-passe-oublie"
+            className="text-xs font-semibold text-bleu-600 hover:underline"
+          >
+            Mot de passe oublié ?
+          </Link>
+        }
       />
-
-      <p className="text-right text-sm">
-        <Link
-          href="/mot-de-passe-oublie"
-          className="font-semibold text-bleu-600 hover:underline"
-        >
-          Mot de passe oublié ?
-        </Link>
-      </p>
 
       {!actif && <AvisIndisponible />}
       <Bouton type="submit" taille="lg" className="w-full" disabled={!actif || enCours}>

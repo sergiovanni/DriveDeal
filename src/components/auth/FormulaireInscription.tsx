@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Bouton } from "@/components/ui/Button";
 import { ChampFormulaire } from "@/components/ui/ChampFormulaire";
+import { ChampMotDePasse } from "@/components/ui/ChampMotDePasse";
 import { inscrire } from "@/modules/comptes/actions";
 import { etatCompteInitial } from "@/modules/comptes/etat";
 import { LONGUEUR_MIN_MOT_DE_PASSE } from "@/modules/comptes/validation";
@@ -44,20 +45,18 @@ export function FormulaireInscription({ actif }: { actif: boolean }) {
         valeurParDefaut={etat.valeurs?.email}
         erreur={etat.erreurs?.email}
       />
-      <ChampFormulaire
+      <ChampMotDePasse
         id="motDePasse"
         nom="motDePasse"
-        type="password"
         libelle="Mot de passe"
         autoComplete="new-password"
         requis
         aide={`${LONGUEUR_MIN_MOT_DE_PASSE} caractères minimum. Une phrase facile à retenir est idéale.`}
         erreur={etat.erreurs?.motDePasse}
       />
-      <ChampFormulaire
+      <ChampMotDePasse
         id="confirmation"
         nom="confirmation"
-        type="password"
         libelle="Confirmer le mot de passe"
         autoComplete="new-password"
         requis

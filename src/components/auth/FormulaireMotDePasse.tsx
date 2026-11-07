@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Bouton } from "@/components/ui/Button";
-import { ChampFormulaire } from "@/components/ui/ChampFormulaire";
+import { ChampMotDePasse } from "@/components/ui/ChampMotDePasse";
 import { changerMotDePasse } from "@/modules/comptes/actions";
 import { etatCompteInitial } from "@/modules/comptes/etat";
 import { LONGUEUR_MIN_MOT_DE_PASSE } from "@/modules/comptes/validation";
@@ -15,20 +15,18 @@ export function FormulaireMotDePasse() {
   return (
     <form action={action} noValidate className="space-y-5">
       <AlerteFormulaire etat={etat} />
-      <ChampFormulaire
+      <ChampMotDePasse
         id="motDePasse"
         nom="motDePasse"
-        type="password"
         libelle="Nouveau mot de passe"
         autoComplete="new-password"
         requis
         aide={`${LONGUEUR_MIN_MOT_DE_PASSE} caractères minimum.`}
         erreur={etat.erreurs?.motDePasse}
       />
-      <ChampFormulaire
+      <ChampMotDePasse
         id="confirmation"
         nom="confirmation"
-        type="password"
         libelle="Confirmer le nouveau mot de passe"
         autoComplete="new-password"
         requis
