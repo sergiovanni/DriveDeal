@@ -1,13 +1,13 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { lireEnvServeur } from "@/lib/env";
+import { lireEnvBase } from "@/lib/env";
 import * as schema from "./schema";
 
 let instance: ReturnType<typeof creer> | undefined;
 
 // Ouvre la connexion Postgres puis la relie à Drizzle avec le schéma typé.
 function creer() {
-  const { DATABASE_URL } = lireEnvServeur();
+  const { DATABASE_URL } = lireEnvBase();
   // `prepare: false` : requis avec le pooler Supabase en mode transaction (Vercel).
   const client = postgres(DATABASE_URL, { prepare: false });
   return drizzle(client, { schema });
