@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { BoutonsCompte } from "./BoutonsCompte";
 
 const liens = [
   { href: "/", libelle: "Accueil" },
@@ -77,6 +78,9 @@ export function NavLiens() {
                   </Link>
                 </li>
               ))}
+              <li onClick={() => setOuvert(false)}>
+                <BoutonsCompte variante="liste" />
+              </li>
             </ul>
           </nav>
         )}

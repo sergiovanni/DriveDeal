@@ -70,8 +70,10 @@ src/
     animation/      Apparition au défilement, compteurs, barre de progression
     vehicules/      Cartes, filtres, pagination du catalogue
     contact/        Formulaire de contact
+    auth/           Formulaires du compte (connexion, inscription, profil…)
   modules/        Logique métier, un dossier par domaine (véhicules, contact…)
-  lib/            Outils transverses : base de données, Supabase, variables d'environnement, formats
+  lib/            Outils transverses : base de données, Supabase, authentification (auth/), variables d'environnement, formats
+  proxy.ts        Filtre des pages privées et renouvellement de session (nom Next.js 16 de « middleware »)
 docs/             Documentation du projet (cadrage, règles, architecture, guides)
 drizzle/          Migrations SQL (générées et écrites à la main)
 scripts/          Scripts ponctuels (remplissage de la base de développement)

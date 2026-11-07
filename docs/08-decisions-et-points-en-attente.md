@@ -32,6 +32,7 @@
 | T-04 | Authentification | Supabase Auth (`@supabase/ssr`), rôles/permissions dans nos tables | Auth.js / Better Auth sur la base Supabase | ✅ Décidé par le porteur |
 | T-05 | Tests | Vitest + Playwright | Jest + Cypress | ⏸ À valider |
 | T-06 | Stockage de fichiers | Supabase Storage, fichiers privés via URL signées | S3, Vercel Blob | Proposé (cohérent avec Supabase) |
+| T-12 | Politique de contenu (CSP) | Reportée : demande des « nonces » par requête, ce qui rend toutes les pages dynamiques | CSP stricte par nonces, ou CSP assouplie | ⏸ À étudier |
 | T-11 | Cache des données | `unstable_cache` (60 s) + `revalidate = 60` pour l'instant | `use cache` / Cache Components (recommandé par Next.js 16, structure à adapter) | ⏸ À étudier |
 | T-10 | Tâches planifiées | Vercel Cron (expiration des réservations, outbox, réconciliation) | Service de files externe | Proposé |
 | T-07 | Génération PDF | Bibliothèque PDF côté serveur | HTML→PDF navigateur headless | ⏸ À valider |
@@ -88,6 +89,7 @@ Décisions **actées** par le cadrage (non à rediscuter) : conserver la stack N
 | 2026-11-06 | Couche d'accès aux données du catalogue : lecture dans la base si `DATABASE_URL` est renseignée, données de démonstration sinon ; cache 60 s ; script de remplissage de la base de développement protégé (confirmation obligatoire, refus en production). Lecture en base non testée sur une vraie base | Claude Code | À tester sur Supabase |
 | 2026-11-06 | Proposition d'architecture backend (doc 11) soumise : décisions D1 à D10 en attente de validation ; défauts E1 à E5 relevés sur l'existant ; aucune modification structurelle effectuée | Claude Code | ⏸ En attente de validation |
 | 2026-11-07 | Premier branchement réel : projet Supabase de développement créé (région `eu-central-1`, Francfort), `.env.local` vérifié (`npm run env:verifier`), 4 migrations appliquées sans erreur ; migrations manuelles `0002` et `0003` validées sur vraie base ; test de sécurité externe réussi ; commande `db:verifier-securite` ajoutée. Constat : `anon` a tous les droits SQL par défaut (RLS seule barrière) → durcissement `0004` proposé (doc 11, D10) | Claude Code | ✅ Vérifié |
+| 2026-11-07 | Authentification développée selon les recommandations du doc 11 (Supabase Auth, e-mail + mot de passe de 12 à 72 caractères, confirmation d'e-mail, rôles lus en base, gardes serveur, proxy.ts). Non faits : MFA administrateur, limitation de débit applicative, migration 0004, CSP. Le flux complet avec envoi d'e-mail n'a pas été testé (service d'e-mails de Supabase limité) | Claude Code | À tester par le porteur |
 | 2026-11-06 | Pas de commit/push ni de développement avant validation des fondations techniques | Claude Code | Proposé |
 
 ## 6. Prochaines étapes suggérées

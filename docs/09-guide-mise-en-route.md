@@ -130,6 +130,64 @@ l'extérieur avec la clé **publique** (lire des données privées, créer un fa
 véhicule, un faux message, modifier un rôle) et vérifie dans la base qu'aucune n'a réussi. Si une
 attaque réussissait, il supprime ce qu'il a créé et échoue. Il refuse de tourner en production.
 
+## Partie B bis — Configurer l'authentification dans Supabase
+
+Le code de connexion est prêt ; Supabase doit être réglé **une fois** pour le projet de
+développement (tableau de bord → **Authentication**).
+
+### 1. Adresses du site (obligatoire)
+
+*Authentication → URL Configuration* :
+
+| Réglage | Valeur (développement) |
+|---|---|
+| **Site URL** | `http://localhost:3000` |
+| **Redirect URLs** (ajouter) | `http://localhost:3000/**` |
+
+Sans cela, les liens reçus par e-mail (confirmation, réinitialisation) sont refusés ou renvoient
+vers une mauvaise adresse. En production : le domaine définitif, et le motif des déploiements de
+prévisualisation Vercel.
+
+### 2. Confirmation d'adresse e-mail
+
+*Authentication → Sign In / Providers → Email* : laisser **« Confirm email » activé** (recommandé).
+Le compte reste inactif tant que le lien reçu par e-mail n'a pas été ouvert.
+
+### 3. Envoi des e-mails : attention à la limite
+
+Le service d'e-mails **intégré** de Supabase est prévu pour les essais : il est **très limité**
+(quelques e-mails par heure) et n'envoie, selon la configuration du projet, **qu'aux adresses des
+membres de l'organisation**. Conséquences :
+
+- **Pour tester maintenant** : inscrivez-vous avec **votre propre adresse** (celle du compte
+  Supabase). Ou, **en développement seulement**, désactivez « Confirm email » : l'inscription ouvre
+  alors directement une session.
+- **Avant la mise en ligne** : brancher un vrai service d'envoi (*Authentication → SMTP Settings*).
+  Le choix du prestataire est en attente (docs/08, point I-13).
+
+### 4. Longueur du mot de passe (recommandé)
+
+*Authentication → Sign In / Providers → Email → Minimum password length* : mettre **12** (le site
+l'exige déjà ; ce réglage ajoute la même règle côté Supabase).
+
+### 5. Créer le premier administrateur
+
+Le rôle « administrateur » ne s'obtient **jamais** depuis le site (c'est voulu : personne ne peut
+s'auto-promouvoir). Après vous être inscrit et avoir confirmé votre adresse, ouvrez *SQL Editor*
+dans Supabase et exécutez (en remplaçant l'adresse) :
+
+```sql
+insert into public.user_roles (user_id, role_id)
+select u.id, r.id
+from auth.users u, public.roles r
+where u.email = 'votre-adresse@exemple.fr' and r.code = 'administrateur'
+on conflict do nothing;
+```
+
+Reconnectez-vous : la page `/admin` s'ouvre. Pour retirer le droit : `delete from public.user_roles
+where user_id = (select id from auth.users where email = '…') and role_id = (select id from
+public.roles where code = 'administrateur');`.
+
 ## Partie C — Tester en local
 
 ```bash
