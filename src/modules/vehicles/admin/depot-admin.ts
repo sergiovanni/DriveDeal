@@ -597,3 +597,12 @@ export function estStatutValide(valeur: unknown): valeur is StatutVehicule {
     typeof valeur === "string" && (STATUTS_VEHICULE as readonly string[]).includes(valeur)
   );
 }
+
+/** Noms des marques déjà enregistrées (suggestions du formulaire, pour éviter les doublons de saisie). */
+export async function listerNomsMarques(): Promise<string[]> {
+  const lignes = await db()
+    .select({ nom: marques.nom })
+    .from(marques)
+    .orderBy(asc(marques.nom));
+  return lignes.map((l) => l.nom);
+}

@@ -1,44 +1,131 @@
 import type { Metadata } from "next";
-import { Badge } from "@/components/ui/Badge";
-import { Conteneur } from "@/components/ui/Conteneur";
+import Link from "next/link";
+import { BadgeStatut, CarteIndicateur } from "@/components/admin/ElementsAdmin";
+import { BoutonLien } from "@/components/ui/Button";
 import { exigerAdministrateur } from "@/lib/auth/garde";
+import { formaterPrix } from "@/lib/money";
+import { compterParStatut, listerPourAdmin } from "@/modules/vehicles/admin/depot-admin";
 
 export const metadata: Metadata = {
-  title: "Administration",
+  title: "Tableau de bord",
   robots: { index: false },
 };
 
 /**
- * Espace d'administration (page RÉSERVÉE au rôle « administrateur »).
- *
- * Pour l'instant : une page d'accueil qui prouve que la protection fonctionne. Les modules
- * (véhicules, commandes, clients…) viendront ici. Chaque Server Action d'administration devra
- * elle aussi appeler `exigerAdministrateur()` : protéger la page ne suffit pas.
+ * Tableau de bord de l'administration.
+ * Tous les chiffres sont lus en base : aucun indicateur fictif. Les indicateurs financiers
+ * (chiffre d'affaires, encaissements) viendront avec les commandes et les paiements.
  */
 export default async function PageAdmin() {
-  // Non connecté -> connexion. Connecté sans le rôle -> page 404 (l'existence de l'espace n'est pas révélée).
-  const admin = await exigerAdministrateur("/admin");
+  // Chaque page d'administration vérifie elle-même les droits (voir layout.tsx).
+  await exigerAdministrateur("/admin");
+
+  const [compteurs, recents] = await Promise.all([
+    compterParStatut(),
+    listerPourAdmin({ page: 1, parPage: 5 }),
+  ]);
 
   return (
-    <Conteneur className="py-12">
-      <h1 className="text-3xl font-extrabold tracking-tight text-marine-900">
-        Administration
-      </h1>
-      <p className="mt-2 flex flex-wrap items-center gap-2 text-gris-500">
-        Connecté en tant que {admin.email}
-        {admin.roles.map((r) => (
-          <Badge key={r} ton="bleu">
-            {r}
-          </Badge>
-        ))}
-      </p>
-      <div className="mt-8 rounded-2xl border border-dashed border-gris-300 bg-gris-50 p-8">
-        <h2 className="font-bold text-gris-900">Modules à venir</h2>
-        <p className="mt-2 text-sm leading-6 text-gris-500">
-          Gestion des véhicules, des photos, des commandes et des clients. Chaque module
-          sera ajouté avec ses propres contrôles d’accès et son journal d’audit.
-        </p>
+    <>
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-bleu-600">
+            Administration
+          </p>
+          <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-marine-900">
+            Tableau de bord
+          </h1>
+          <p className="mt-1 text-gris-500">
+            Vue d’ensemble de votre stock de véhicules.
+          </p>
+        </div>
+        <BoutonLien href="/admin/vehicules/nouveau" taille="lg">
+          + Ajouter un véhicule
+        </BoutonLien>
       </div>
-    </Conteneur>
+
+      <section
+        aria-label="Indicateurs"
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+      >
+        <CarteIndicateur
+          libelle="Véhicules au total"
+          valeur={compteurs.total}
+          detail="Tous statuts confondus"
+        />
+        <CarteIndicateur
+          libelle="Publiés"
+          valeur={compteurs.publie}
+          detail="Visibles sur le site"
+        />
+        <CarteIndicateur
+          libelle="Brouillons"
+          valeur={compteurs.brouillon}
+          detail="En cours de préparation"
+        />
+        <CarteIndicateur
+          libelle="Réservés ou vendus"
+          valeur={compteurs.reserve + compteurs.vendu}
+          detail="Gérés par les commandes"
+        />
+      </section>
+
+      <section
+        aria-labelledby="titre-recents"
+        className="mt-10 rounded-2xl border border-gris-200 bg-white shadow-sm"
+      >
+        <div className="flex items-center justify-between gap-4 border-b border-gris-200 px-5 py-4">
+          <h2 id="titre-recents" className="font-bold text-gris-900">
+            Dernières modifications
+          </h2>
+          <Link
+            href="/admin/vehicules"
+            className="text-sm font-semibold text-bleu-600 hover:underline"
+          >
+            Tout voir
+          </Link>
+        </div>
+
+        {recents.lignes.length === 0 ? (
+          <div className="px-5 py-12 text-center">
+            <p className="font-semibold text-gris-900">Aucun véhicule pour l’instant.</p>
+            <p className="mt-1 text-sm text-gris-500">
+              Ajoutez votre premier véhicule : il restera invisible du public tant que
+              vous ne l’aurez pas publié.
+            </p>
+            <BoutonLien href="/admin/vehicules/nouveau" className="mt-5">
+              Ajouter un véhicule
+            </BoutonLien>
+          </div>
+        ) : (
+          <ul className="divide-y divide-gris-100">
+            {recents.lignes.map((v) => (
+              <li key={v.id}>
+                <Link
+                  href={`/admin/vehicules/${v.id}`}
+                  className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 hover:bg-gris-50"
+                >
+                  <span>
+                    <span className="block text-xs font-semibold text-gris-500">
+                      {v.reference}
+                    </span>
+                    <span className="block font-semibold text-gris-900">
+                      {v.marque} {v.modele}
+                    </span>
+                    <span className="block text-sm text-gris-500">{v.version}</span>
+                  </span>
+                  <span className="flex items-center gap-4">
+                    <span className="font-bold text-marine-900">
+                      {formaterPrix(v.prixCentimes)}
+                    </span>
+                    <BadgeStatut statut={v.statut} />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </>
   );
 }

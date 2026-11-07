@@ -13,6 +13,8 @@ type ChampFormulaireProps = {
   erreur?: string;
   /** Petit texte d'aide sous le champ. */
   aide?: string;
+  /** Identifiant d'une <datalist> : propose des suggestions pendant la saisie. */
+  liste?: string;
 };
 
 /**
@@ -29,6 +31,7 @@ export function ChampFormulaire({
   valeurParDefaut,
   erreur,
   aide,
+  liste,
 }: ChampFormulaireProps) {
   const idMessage = `${id}-message`;
   return (
@@ -44,6 +47,7 @@ export function ChampFormulaire({
         autoComplete={autoComplete}
         required={requis}
         defaultValue={valeurParDefaut}
+        list={liste}
         aria-invalid={Boolean(erreur)}
         aria-describedby={erreur || aide ? idMessage : undefined}
         className="h-11 w-full rounded-lg border border-gris-300 bg-white px-3 text-sm text-gris-900 aria-[invalid=true]:border-red-500"
